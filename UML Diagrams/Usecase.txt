@@ -1,5 +1,4 @@
 @startuml
-'http://www.plantuml.com/plantuml/png/SoWkIImgAStDuNBAJrBGjLDmpCbCJbMmKiX8pSd9vt98pKi1IW80
 left to right direction
 actor Customer as c
 actor Manager as mgr
