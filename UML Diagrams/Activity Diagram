@@ -1,0 +1,24 @@
+@startuml
+start
+:Show menu;
+repeat
+  :Select Items;
+repeat while (done selecting?) is (no )
+->yes;
+:Place Order;
+:Notify Chef with order details;
+
+repeat
+  :Notify Customer about order updaes and timmings;
+  :Delay;
+repeat while (Order Prepared?) is (no )
+->yes;
+:Notify Waiter to deliver food;
+repeat
+  :Delay;
+repeat while (Customer done eating?) is (no )
+->yes;
+:Generate Bill;
+:Ask for feedback;
+stop
+@enduml
