@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+actor Customer as c
+actor Manager as mgr
+actor Chef as cf
+actor Cashier as csr
+rectangle Smart_Restaurant_System{
+	c --> (Login)
+	c--> (view menu)
+	c --> (view Order)
+	c --> (Place Order)
+	c <--> (Notifications)
+	c --> (Pay Bill)
+	(Pay Bill) -- csr
+	(Notifications) <--> cf
+	mgr -- (See Total sales and revenue)
+
+}
+note right of csr: Helps clearing the bill.
+@enduml

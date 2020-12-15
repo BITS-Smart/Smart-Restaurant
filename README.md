@@ -1,4 +1,5 @@
 # Smart-Restaurant
+
 OOAD project.
 
 This project will help improve the customer-restaurant interaction.

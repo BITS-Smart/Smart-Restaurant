@@ -1,0 +1,33 @@
+@startuml
+	actor customer
+	database RMS
+	entity chef
+	actor waiter
+
+	autonumber
+
+	== Customer Order Confirmation == 
+	customer -> RMS : seeMenu()
+	RMS -> customer : showMenu()
+	customer -> RMS : confirmand PlaceOrder
+	RMS -> customer : sucessMessage()
+
+	== Chef Updates Regularly ==
+	RMS -> chef : show Order Details
+	chef -> RMS : update the order details and timing
+	RMS -> customer : show the order updates and timing
+	RMS -> customer : notify to freshen up as food to be delivered shortly
+	chef -> waiter : notify to take order to table
+
+	== Billing and Feedback ==
+	customer -> RMS : showBill()	
+	RMS -> customer : show Bill details and payment options
+	...some time later...
+
+    waiter --> customer : helps clearing the bill
+	RMS -> customer : Bill cleared message
+	RMS -> customer : Feedback
+
+	Manager -> RMS : requestReport About sales
+	RMS -> Manager : Generate necessary reports
+@enduml
