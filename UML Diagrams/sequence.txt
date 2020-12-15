@@ -1,8 +1,11 @@
 @startuml
+
+title **Smart Restaurant Sequence Diagram**
 	actor customer
 	database RMS
 	entity chef
 	actor waiter
+	actor Manager
 
 	autonumber
 
@@ -26,8 +29,11 @@
 
     waiter --> customer : helps clearing the bill
 	RMS -> customer : Bill cleared message
-	RMS -> customer : Feedback
+	RMS -> customer : Ask for Feedback
+	customer -> RMS : Feedback
+	RMS -> customer : Thank you message
 
 	Manager -> RMS : requestReport About sales
 	RMS -> Manager : Generate necessary reports
 @enduml
+
