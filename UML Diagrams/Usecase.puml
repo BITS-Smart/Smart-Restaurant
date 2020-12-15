@@ -3,18 +3,35 @@ left to right direction
 actor Customer as c
 actor Manager as mgr
 actor Chef as cf
-actor Cashier as csr
+actor Waiter as wtr
+cf --|> Staff
+mgr --|> Staff
+wtr --|> Staff
 rectangle Smart_Restaurant_System{
-	c --> (Login)
-	c--> (view menu)
+	(See Total sales and revenue) <--> mgr
+    (table setup) <-- mgr
+	(Notifications) <--> cf
+	c --> (view menu)
 	c --> (view Order)
+	c --> (enter identification details)
 	c --> (Place Order)
 	c <--> (Notifications)
 	c --> (Pay Bill)
-	(Pay Bill) -- csr
-	(Notifications) <--> cf
-	mgr -- (See Total sales and revenue)
-
+    ' (Notifications) <--> wtr
+	(Pay Bill) -- wtr
 }
-note right of csr: Helps clearing the bill.
+rectangle payment{
+	(cash) ..> (Pay Bill)  : <<extends>>
+	(card) ..> (Pay Bill)  : <<extends>>
+	(QR) ..> (Pay Bill)  : <<extends>>
+	rectangle online_payment{
+	(netbanking) ..> (Pay Bill)  : <<extends>>
+	(generated_QR) ..> (Pay Bill)  : <<extends>>
+	(online card payment) ..> (Pay Bill)  : <<extends>>
+	}
+
+	}
+
+note right of wtr: Helps clearing the bill.
+note right of wtr: Serves food to customer.
 @enduml
