@@ -15,6 +15,12 @@ class Waiter {
 class Chef {
 }
 
+class Table {
+    tableNumber : int
+    capacity : int
+    assigned_waiter_id: int
+}
+
 class Customer {
     name :String
     phoneNumber : String
@@ -36,10 +42,6 @@ class MenuItem{
     isVeg : Boolean
 }
 
-class Table {
-    tableNumber : int
-    capacity : int
-}
 
 class Order{
     id :  int;
@@ -87,9 +89,12 @@ Staff <|.. Chef
 
 MenuItem "0..*" -- "1" Category
 Table -- Order
+Order *-- Payment
 Order *-- OrderItem
 Waiter o-- Order
 Chef o-- OrderItem
+Table -- Manager
+Table -- Waiter
 OrderItem -- OrderStatus
 OrderItem o-- MenuItem
 MenuItem "1" -- OrderItem
