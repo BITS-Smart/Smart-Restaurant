@@ -25,6 +25,7 @@ class Customer {
     name :String
     phoneNumber : String
     email : Email
+    is_VIP: Boolean
 }
 
 
