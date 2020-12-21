@@ -1,0 +1,104 @@
+@startuml
+class Staff {
+  name : String
+  id : int;
+  dob : Date
+}
+
+class Manager {
+
+}
+
+class Waiter {
+}
+
+class Chef {
+}
+
+class Table {
+    tableNumber : int
+    capacity : int
+    assigned_waiter_id: int
+}
+
+class Customer {
+    name :String
+    phoneNumber : String
+    email : Email
+    is_VIP: Boolean
+}
+
+
+enum Category {
+    APPETIZER,
+    MAIN COURSE,
+    DESSERT,
+    BEVERAGES
+}
+class MenuItem{
+    name : String
+    description :  String
+    price : float
+    category : Category
+    isVeg : Boolean
+}
+
+
+class Order{
+    id :  int;
+    tableNumber : int
+    date : Date
+    isPaid : Boolean
+    isCancelled : Boolean
+    total : int
+    waiter : Waiter
+}
+
+enum OrderStatus{
+    isCooking
+    cooked
+    served
+    cancelled
+}
+class OrderItem{
+    id : int
+    item : MenuItem
+    quantity : int
+    Note : String
+    chef : Chef
+    status : OrderStatus
+}
+
+class Payment {
+    id: int
+    amount : double
+    type : 
+}
+
+enum PaymentOption{
+    Cash
+    UPI
+    Card
+    NetBanking
+    Generated QR
+    Online Card Payment
+}
+
+Staff <|.. Manager
+Staff <|.. Waiter
+Staff <|.. Chef
+
+MenuItem "0..*" -- "1" Category
+Table -- Order
+Order *-- Payment
+Order *-- OrderItem
+Waiter o-- Order
+Chef o-- OrderItem
+Table -- Manager
+Table -- Waiter
+OrderItem -- OrderStatus
+OrderItem o-- MenuItem
+MenuItem "1" -- OrderItem
+Customer "1"-- Order
+Payment -- PaymentOption
+@enduml

@@ -3,7 +3,7 @@
 title **Smart Restaurant Sequence Diagram**
 	actor customer
 	database Restaurant_Management_System as RMS
-	entity Chef
+	actor Chef
 	actor Waiter
 	actor Manager
 
