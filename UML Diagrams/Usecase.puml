@@ -11,11 +11,15 @@ rectangle Smart_Restaurant_System{
 	(See Total sales and revenue) <--> mgr
     (table setup) <-- mgr
 	(Notifications) <--> cf
+	(Notifications) <--> wtr
+	(Login) <.. (table setup) : <<include>>
+	(Login) <.. (See Total sales and revenue) : <<include>>
+	(Login) <.. (Notifications) : <<include>>
 	c --> (view menu)
 	c --> (view Order)
 	c --> (enter identification details)
 	c --> (Place Order)
-	c <--> (Notifications)
+	' c <--> (Notifications)
 	c --> (Pay Bill)
     ' (Notifications) <--> wtr
 	(Pay Bill) -- wtr
