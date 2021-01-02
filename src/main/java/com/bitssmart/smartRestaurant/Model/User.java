@@ -64,7 +64,7 @@ public class User {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 	
-	@Column(name = "isEnabled", columnDefinition = "bit(1) default 1", nullable = false)
+	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isEnabled;
 
 }
