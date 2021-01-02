@@ -6,14 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,31 +31,32 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "tables")
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @ToString
-public class User {
-
-
+public class Tables {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "capacity", nullable = false)
+	private int capacity;
 	
-	@Column(name = "loginId", nullable = false)
-	private String loginId;
-	
-	@Column(name = "password", nullable = false)
-	private String password;
+	@Column(name = "tableNo", nullable = false)
+	private int tableNo;
 	
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private Restaurant restaurantId;
+	
+	@ManyToOne
+	@JsonIgnore
+	@PrimaryKeyJoinColumn
+	private User userId;
 	
 	@Temporal(TemporalType.TIMESTAMP )
 	@CreationTimestamp
@@ -73,22 +71,8 @@ public class User {
 	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isEnabled;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private List<Tables> tables;
-	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "tableId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private List<FoodOrder> orders;
-	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private List<OrderItem> orderItems;
-	
-	@Column(name = "userRoles", nullable = false)
-	private UserRoles userRoles;
-
 }

@@ -6,14 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,6 +18,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,13 +32,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "menu_items")
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @ToString
-public class User {
-
+public class MenuItems {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,16 +46,20 @@ public class User {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "loginId", nullable = false)
-	private String loginId;
+	@Column(name = "description", nullable = false)
+	private String description;
 	
-	@Column(name = "password", nullable = false)
-	private String password;
+	@Column(name = "ingredients")
+	private String ingredients;
 	
-	@ManyToOne
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private Restaurant restaurantId;
+	@Column(name = "price", nullable = false)
+	private float price;
+	
+	@Column(name = "foodCategory", nullable = false)
+	private FoodCategory foodCategory;
+	
+	@Column(name = "isVeg", columnDefinition = "boolean default true", nullable = false)
+	private Boolean isVeg;
 	
 	@Temporal(TemporalType.TIMESTAMP )
 	@CreationTimestamp
@@ -73,22 +74,13 @@ public class User {
 	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isEnabled;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
-	private List<Tables> tables;
+	private Restaurant restaurantId;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private List<FoodOrder> orders;
-	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "menuItemId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private List<OrderItem> orderItems;
-	
-	@Column(name = "userRoles", nullable = false)
-	private UserRoles userRoles;
-
 }

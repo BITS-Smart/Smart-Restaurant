@@ -1,5 +1,8 @@
 package com.bitssmart.smartRestaurant.Model;
 
-public class UserRoles {
-
+public enum UserRoles {
+	MANAGER,
+	CHEF,
+	WAITER,
+	CUSTOMER
 }

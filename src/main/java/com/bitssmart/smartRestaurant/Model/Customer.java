@@ -6,14 +6,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,13 +30,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "customer")
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @ToString
-public class User {
-
+public class Customer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,16 +44,11 @@ public class User {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "loginId", nullable = false)
-	private String loginId;
+	@Column(name = "phoneNumber", nullable = false)
+	private String phoneNumber;
 	
-	@Column(name = "password", nullable = false)
-	private String password;
-	
-	@ManyToOne
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private Restaurant restaurantId;
+	@Column(name = "email", nullable = false)
+	private String email;
 	
 	@Temporal(TemporalType.TIMESTAMP )
 	@CreationTimestamp
@@ -70,25 +60,11 @@ public class User {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 	
-	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
-	private Boolean isEnabled;
+	@Column(name = "isVIP", columnDefinition = "boolean default false", nullable = false)
+	private Boolean isVIP;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "customerID", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
-	private List<Tables> tables;
-	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private List<FoodOrder> orders;
-	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private List<OrderItem> orderItems;
-	
-	@Column(name = "userRoles", nullable = false)
-	private UserRoles userRoles;
-
+	private List<FoodOrder> orderId;
 }

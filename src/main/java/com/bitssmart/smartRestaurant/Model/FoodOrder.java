@@ -6,11 +6,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -34,31 +32,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "food_order")
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @ToString
-public class User {
-
+public class FoodOrder {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name = "name", nullable = false)
-	private String name;
-	
-	@Column(name = "loginId", nullable = false)
-	private String loginId;
-	
-	@Column(name = "password", nullable = false)
-	private String password;
-	
-	@ManyToOne
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private Restaurant restaurantId;
 	
 	@Temporal(TemporalType.TIMESTAMP )
 	@CreationTimestamp
@@ -70,25 +53,30 @@ public class User {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 	
-	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
-	private Boolean isEnabled;
+	@Column(name = "totalPrice", nullable = false)
+	private float totalPrice;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@Column(name = "isPaid", columnDefinition = "boolean default false", nullable = false)
+	private Boolean isPaid;
+	
+	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
-	private List<Tables> tables;
+	private Tables tableId;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
-	private List<FoodOrder> orders;
+	private User userId;
 	
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private List<OrderItem> orderItems;
 	
-	@Column(name = "userRoles", nullable = false)
-	private UserRoles userRoles;
-
+	@ManyToOne
+	@JsonIgnore
+	@PrimaryKeyJoinColumn
+	private Customer customerID;
+	
 }
