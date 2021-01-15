@@ -11662,6 +11662,15 @@ a.text-dark:focus {
   content: "";
 }
 
+#lblCartCount{
+	font-size: 12px;
+  background: #ff0000;
+  color: #fff;
+  padding: 1px 3px;
+  vertical-align: top;
+  margin-left: -9px;
+}
+
 .fa-folder:before {
   content: "";
 }

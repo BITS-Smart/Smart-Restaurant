@@ -29,9 +29,12 @@ public class Restaurant {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Temporal(TemporalType.TIMESTAMP )
+	@Column(name = "about")
+	private String about;
+	
 	@CreationTimestamp
-	@Column(name = "created_at")
+	@Temporal(TemporalType.TIMESTAMP )
+	@Column(name = "created_at", columnDefinition = "timestamp default current_timestamp")
 	private Date creatededAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -42,16 +45,19 @@ public class Restaurant {
 	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isEnabled;
 	
+	@ToString.Exclude
 	@OneToMany(mappedBy = "restaurantId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private List<User> users;
 	
+	@ToString.Exclude
 	@OneToMany(mappedBy = "restaurantId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private List<Tables> tables;
 	
+	@ToString.Exclude
 	@OneToMany(mappedBy = "restaurantId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
