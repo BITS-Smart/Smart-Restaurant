@@ -58,9 +58,9 @@ public class Tables {
 	@PrimaryKeyJoinColumn
 	private User userId;
 	
-	@Temporal(TemporalType.TIMESTAMP )
 	@CreationTimestamp
-	@Column(name = "created_at")
+	@Temporal(TemporalType.TIMESTAMP )
+	@Column(name = "created_at", columnDefinition = "timestamp default current_timestamp")
 	private Date creatededAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)

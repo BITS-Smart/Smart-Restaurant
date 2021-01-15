@@ -1,9 +1,6 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
+
 <!doctype html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -18,13 +15,13 @@ Author URL: http://w3layouts.com
     <link rel="stylesheet" href="/css/style-starter.css">
 </head>
 
-<body>
+<body onload="readyFunction()">
     <!--header-->
     <header id="site-header" class="fixed-top">
         <div class="container">
             <nav class="navbar navbar-expand-lg stroke px-0">
                 <h1>
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="/home">
                         <i class="fa fa-cutlery" aria-hidden="true"></i>  Smart Restaurant
                     </a>
                 </h1>
@@ -59,6 +56,7 @@ Author URL: http://w3layouts.com
                 <div class="search-right">
                     <a href="#" id="myBtn">
                         <i class="fa fa-shopping-cart" style="font-size:24px"></i>
+                        <span class='badge badge-warning' id='lblCartCount'></span>
                     </a>
                 </div>
                 <!-- //search button -->
@@ -88,604 +86,187 @@ Author URL: http://w3layouts.com
     <!-- //inner banner -->
     <!-- menu -->
     <div class="menu-w3ls py-5" id="menu">
-        <div class="container py-md-4 py-3">
-            <h2 class="title-big mb-2">Breakfast</h2>
+        <div class="container py-md-4 py-3" id="mainDiv">
+        <div class="another-sec" th:id="'anthrSecDivId' +${iterStatCat.index}" th:each="foodCat,iterStatCat : ${foodCategory}" th:attr="onload=|checkIfEmpty(this.id);|">
+            <h2 class="title-big mb-2" th:text="${foodCat}"></h2>
             <div class="row menu-body">
                 <!-- Section starts: Breakfast -->
                 <div class="col-lg-6 menu-section">
                     <!-- Item starts -->
-                    <div class="row menu-item">
+                    <!-- iterStat.odd -->
+                    <div class="row menu-item"  th:each="mItems,iterStat : ${restaurant.menuitems}" th:if="${mItems.isVeg and #strings.startsWith(mItems.foodCategory, foodCat) and not #lists.isEmpty(mItems) and mItems.isEnabled}">
                         <div class="col-3 p-0 position-relative">
-                            <img src="/images/Poha-1.jpg" class="img-responsive" alt="">
+                            <img th:src="@{'/images/'+${mItems.name}+'.jpg'}" class="img-responsive" th:onerror="'this.onerror=null; this.src=\'' + @{/images/DefaultFoodImg.jpg} + '\';'" alt=""> 
+                           
                             <!-- + - for adding items -->
-                     <!--   <button id="b1b1" onClick="addToCart('Tomato Toast “Ricotta”','b1b1','btn-group-1','b1count')" class="btn button-style button-style-2" >Add</button>
-                             <div class="btn-group" id="btn-group-1"style=" display:none;float: left;">
-                             <button class="btn  button-style-2" onClick="removeOne('Tomato Toast “Ricotta”','b1b1','btn-group-1','b1count')">-</button>
-                             <button class="btn button-style-2" id="b1count"></button>
-                                <button class="btn  button-style-2" onClick="addOne('Tomato Toast “Ricotta”','b1count')">+</button> 
-                            <a href="#order" class="btn button-style button-style-2">Add</a> 
-                        </div>  -->
-                            <button id="b1b1" onClick="addToCart('Homestyle Poha','b1b1','btn-group-1','b1count')" class="btn button-style button-style-2" >Add</button>
-                            <div class="btn-group" id="btn-group-1"style=" display:none;float: left;">
-                             <button class="btn  button-style-2" onClick="removeOne('Homestyle Poha','b1b1','btn-group-1','b1count')">-</button>
-                             <button class="btn button-style-2" id="b1count"></button>
-                                <button class="btn  button-style-2" onClick="addOne('Homestyle Poha','b1count')">+</button> 
+                            <button th:id="${iterStatCat.index}+'add' +${iterStat.index}+'veg'" th:attr="onclick=|addToCart('${mItems.name}',this.id,'${iterStatCat.index}grpVeg${iterStat.index}','${iterStatCat.index}countVeg${iterStat.index}','${mItems.id}','${mItems.price}')|"  class="btn button-style button-style-2" >Add</button>
+                            <div class="btn-group" th:id="${iterStatCat.index}+'grpVeg' +${iterStat.index}"style=" display:none;float: left;">
+                             <button class="btn  button-style-2" th:attr="onclick=|removeOne('${mItems.name}','${iterStatCat.index}add${iterStat.index}veg','${iterStatCat.index}grpVeg${iterStat.index}','${iterStatCat.index}countVeg${iterStat.index}')|">-</button>
+                             <button class="btn button-style-2" th:id="${iterStatCat.index}+'countVeg' +${iterStat.index}"></button>
+                                <button class="btn  button-style-2" th:attr="onclick=|addOne('${mItems.name}','${iterStatCat.index}countVeg${iterStat.index}')|">+</button> 
                           
                         </div>
                             </div>
                         <div class="col-9 pl-4">
                             <div class="row no-gutters">
                                 <div class="col-9 menu-item-name">
-                                    <h6>Homestyle Poha</h6>
+                                    <h6 th:text="${mItems.name} " ></h6>
                                 </div>
                                 <div class="col-3 menu-item-price text-right">
-                                    <h6>₹50</h6>
+                                    <h6 th:text="'₹' +${mItems.price} "></h6>
                                 </div>
                             </div>
                             <div class="menu-item-description">
-                                <p>For the mornings when you crave something simple and satisfying. This homestyle poha is sure to sate your hunger and help you kickstart your day with joy!</p>
+                                <p th:text="${mItems.description} "></p>
                             </div>
                         </div>
                     </div>
                     <!-- Item ends -->
-                    <!-- Item starts -->
-                    <div class="row menu-item">
-                        <div class="col-3 p-0 position-relative">
-                            <img src="/images/Vegetable_Upma.jpg" class="img-responsive" alt="">
-                            <!-- <a href="#order" class="btn button-style button-style-2">Add</a>  -->
-                            <!--  -->
-                             <button id="b1b2" onClick="addToCart('Vegetable Upma','b1b2','btn-group-2','b2count')" class="btn button-style button-style-2" >Add</button>
-                            <div class="btn-group" id="btn-group-2"style=" display:none;float: left;">
-                             <button class="btn  button-style-2" onClick="removeOne('Vegetable Upma','b1b12','btn-group-2','b2count')">-</button>
-                             <button class="btn button-style-2" id="b2count"></button>
-                                <button class="btn  button-style-2" onClick="addOne('Vegetable Upma','b2count')">+</button> 
-                            </div> 
-                            <!--  -->
-                        </div>
-                        <div class="col-9 pl-4">
-                            <div class="row no-gutters">
-                                <div class="col-9 menu-item-name">
-                                    <h6>Vegetable Upma</h6>
-                                </div>
-                                <div class="col-3 menu-item-price text-right">
-                                    <h6>₹50</h6>
-                                </div>
-                            </div>
-                            <div class="menu-item-description">
-                                <p>Semolina and assorted veggies cooked with traditional Indian masalas in ghee served with coconut chutney = A Fuss-free Breakfast Classic! Contains Gluten and Dairy</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Item ends -->
-                    <!-- Item starts -->
-                    <div class="row menu-item">
-                        <div class="col-3 p-0 position-relative">
-                            <img src="/images/aloo-paratha.jpg" class="img-responsive" alt="">
-                            <a href="#order" class="btn button-style button-style-2">Add</a>
-                        </div>
-                        <div class="col-9 pl-4">
-                            <div class="row no-gutters">
-                                <div class="col-9 menu-item-name">
-                                    <h6>Aloo Paratha with Curd and Pickle</h6>
-                                </div>
-                                <div class="col-3 menu-item-price text-right">
-                                    <h6>₹80</h6>
-                                </div>
-                            </div>
-                            <div class="menu-item-description">
-                                <p>The Classic Indulgent Aloo Paratha made with Rich and Fresh ingredients. Served with Curd and Pickle.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Item ends -->
+                   
                 </div>
                 <!-- Section ends: Breakfast -->
 
                 <!-- Section starts: Breakfast -->
                 <div class="col-lg-6 menu-section pl-lg-5">
                     <!-- Item starts -->
-                    <div class="row menu-item">
+                    <div class="row menu-item"  th:each="mItems,iterStat : ${restaurant.menuitems}" th:if="${not mItems.isVeg and #strings.startsWith(mItems.foodCategory, foodCat) and not #lists.isEmpty(mItems) and mItems.isEnabled}">
                         <div class="col-3 p-0 position-relative">
-                            <img src="/images/Mushroom-and-Cheese-Omelet.jpg" class="img-responsive" alt="">
-                            <a href="#order" class="btn button-style button-style-2">Add</a>
+                            <img th:src="@{'/images/'+${mItems.name}+'.jpg'}" class="img-responsive"   th:onerror="'this.onerror=null; this.src=\'' + @{/images/DefaultFoodImg.jpg} + '\';'" alt="Img not found"> 
+                           
+                            <!-- + - for adding items -->
+                            <button th:id="${iterStatCat.index}+'add' +${iterStat.index}+'Nveg'" th:attr="onclick=|addToCart('${mItems.name}',this.id,'${iterStatCat.index}grpNVeg${iterStat.index}','${iterStatCat.index}countNVeg${iterStat.index}','${mItems.id}','${mItems.price}')|"  class="btn button-style button-style-2" >Add</button>
+                            <div class="btn-group" th:id="${iterStatCat.index}+'grpNVeg' +${iterStat.index}"style=" display:none;float: left;">
+                             <button class="btn  button-style-2" th:attr="onclick=|removeOne('${mItems.name}','${iterStatCat.index}add${iterStat.index}Nveg','${iterStatCat.index}grpNVeg${iterStat.index}','${iterStatCat.index}countNVeg${iterStat.index}')|">-</button>
+                             <button class="btn button-style-2" th:id="${iterStatCat.index}+'countNVeg' +${iterStat.index}"></button>
+                                <button class="btn  button-style-2" th:attr="onclick=|addOne('${mItems.name}','${iterStatCat.index}countNVeg${iterStat.index}')|">+</button> 
+                          
                         </div>
+                            </div>
                         <div class="col-9 pl-4">
                             <div class="row no-gutters">
                                 <div class="col-9 menu-item-name">
-                                    <h6>Mushroom Cheese 3 Egg Omelette with Toast</h6>
+                                    <h6 th:text="${mItems.name} " ></h6>
                                 </div>
                                 <div class="col-3 menu-item-price text-right">
-                                    <h6>₹135</h6>
+                                    <h6 th:text="'₹' +${mItems.price} "></h6>
                                 </div>
                             </div>
                             <div class="menu-item-description">
-                                <p>3 Egg Omelette topped with Mushroom, Cheese and Chili served with Buttered Toast.</p>
+                                <p th:text="${mItems.description} "></p>
                             </div>
                         </div>
                     </div>
                     <!-- Item ends -->
-                    <!-- Item starts -->
-                    <div class="row menu-item">
-                        <div class="col-3 p-0 position-relative">
-                            <img src="/images/Indian-masala-omelette-3.jpg" class="img-responsive" alt="">
-                            <a href="#order" class="btn button-style button-style-2">Add</a>
-                        </div>
-                        <div class="col-9 pl-4">
-                            <div class="row no-gutters">
-                                <div class="col-9 menu-item-name">
-                                    <h6>Masala Vegetable 3 Egg Omelette with Toast</h6>
-                                </div>
-                                <div class="col-3 menu-item-price text-right">
-                                    <h6>₹115</h6>
-                                </div>
-                            </div>
-                            <div class="menu-item-description">
-                                <p>3 Egg Omelette topped with Onion, Tomato, Chili and Coriander provided with Buttered Toast.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Item ends -->
-                    <!-- Item starts -->
-                    <div class="row menu-item">
-                        <div class="col-3 p-0 position-relative">
-                            <img src="/images/pancakes.jpg" class="img-responsive" alt="">
-                            <a href="#order" class="btn button-style button-style-2">Add</a>
-                        </div>
-                        <div class="col-9 pl-4">
-                            <div class="row no-gutters">
-                                <div class="col-9 menu-item-name">
-                                    <h6>Pancake with Peanut Butter and Maple Syrup</h6>
-                                </div>
-                                <div class="col-3 menu-item-price text-right">
-                                    <h6>₹130</h6>
-                                </div>
-                            </div>
-                            <div class="menu-item-description">
-                                <p>Maple syrup is the exquisite addition to the winning combo of bananas and peanut butter. Enjoy your breakfast american style! Contains Nuts and Eggs</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Item ends -->
+                    
                 </div>
                 <!-- Section ends: Breakfast -->
-            </div>
+            </div></div>
 
-            <div class="another-sec">
-                <h2 class="title-big mb-2">Main Course</h2>
-                <div class="row menu-body">
-                    <!-- Section starts: Lunch -->
-                    <div class="col-lg-6 menu-section pr-lg-5">
-                        <!-- Item starts -->
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="/images/veg_thali.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Veg. Thali</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>₹200</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>1 paneer sabji, 1 veg sabji, 4 butter roti, dal fry, jeera rice, gulab jamun (1 piece), butter milk, salad.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Item ends -->
-                        <!-- Item starts -->
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="/images/choleBhature.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Chole Bhatoora</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>₹200</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Chole bhatoora + cold drink 250 ml ) + 1 gulab jamun</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Item ends -->
-                        <!-- Item starts -->
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="/images/soyaChaapCombo.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Soya Chaap Combo</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>₹220</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Soya Chaap Masala ( 250 Ml ) + 3 Plain Roti + 2 Pc Corn Tikki + Rose Sharbat + 1 Pc Gulab Jamun.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Item ends -->
-                    </div>
-                    <!-- Section ends: Lunch -->
-
-                    <!-- Section starts: Lunch -->
-                    <div class="col-lg-6 menu-section pl-lg-5">
-                        <!-- Item starts -->
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="/images/nonvegthali.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Non Veg Thali</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>₹300</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>2 pc chic lollipop,  chic curry , 2 roti, egg bhurji, dal , rice , papad ,pickle , gulab jamun, rose sharbat.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Item ends -->
-                        <!-- Item starts -->
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="/images/EGG_THALI.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Egg Thali</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>₹250</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>1 pc boil fry , egg masala , 2 roti, dal , rice , 1 gulab jamun</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Item ends -->
-                        <!-- Item starts -->
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="/images/FishThali.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Goan Fish Thali</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>₹300</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>1 pc fish fry , fish curry, 2 roti, rice, dry veg,papad, pickle  gulab jamun</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Item ends -->
-                    </div>
-                    <!-- Section ends: Lunch -->
-                </div>
-            </div>
             
-			<!-- <div class="modal" style="background: green;position: absolute; float: left; height: 300px; width: 500px; left:30%; top:50%; transform: translate(-50,-50); display: block; border: 1px solid;">
-                Your cart shows here!!
-            </div> -->
-            
+			<!-- <div class="menu-w3ls py-5" style="font-size: xx-large;" th:unless="${not #lists.isEmpty(restaurant.menuitems)}">
+				   <div>No Items Available</div>
+			</div> -->
+				            
          
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
 
+ 				<form th:object="${orderObj}" method="post" th:action="${'/placeOrder'}">
                 <!-- Modal content -->
                 <div class="modal-content" style="background-color: #28a745;
                 margin: 15% auto; 
                 padding: 20px;
                 border: 1px solid #888;
                 width: 50%; 
-                height: 50%;">
+                height: 50%;
+                overflow-y: initial; ">
                     <span class="close">&times;</span>
-                    <h3 style="font-size: large; font-weight: 400; color: honeydew; text-align: center;">Your Cart Details.</h3>
-                    <p id="cart" style="font-style: oblique; font-size: medium; font-weight: 100; color: honeydew;"></p>
-                   <p id="placeOrderMessage" style="font-style: oblique; font-size: medium; font-weight: 100; color: honeydew; display: none; padding-top: 30%;">Your order has been placed. Minimum waiting time is 15 minutes. Thank You.</p>
-                    <button onClick="placeOrder()" id="place" class="btn button-style button-style-2" style="float: right;background-color:   honeydew; color: #28a745;">Place Order</button>
-              
+                    <h3 class="modal-title" style="font-size: large; font-weight: 400; color: honeydew; text-align: center;">Your Cart Details.</h3>
+                    
+                    <div class="modal-body" style="overflow-y: auto;">
+                    
+                  
+ <!-- trying form thmleaf  -->
+ 					
+ 					
+ 					
+       
+<!--INPUT FIELDS-->
+        <div class="row" style="overflow-y: auto;font-style: oblique; font-size: medium; font-weight: 100; color: honeydew; ">
+            <div class="col">
+
+         
+
+                <div id="movieList">
+                    <div class="row">
+                        <div class="col form-group">id</div>
+                        <div class="col form-group">item</div>
+                        <div class="col form-group">quantity</div>
+                        <div class="col form-group">price</div>
+                        <div class="col form-group">requests</div>
+                    </div>
+                    <div class="row item" th:each="movie, status : ${orderObj.orderItems}">
+                        <div class="col form-group">
+                        <p ></p>
+                            <input th:field="*{orderItems[__${status.index}__].menuItemId}" class="form-control" type ="hidden">
+                        </div>
+                        <div class="col form-group">
+                        <p th:id="'itemName'+${status.index}"></p>
+                        </div>
+                        <div class="col form-group">
+                            <input th:field="*{orderItems[__${status.index}__].quantity}" readonly class="form-control">
+                        </div>
+                        <div class="col form-group">
+                        <p th:id="'itemPrice'+${status.index}"></p>
+                        </div>
+                        <div class="col form-group">
+                            <input th:field="*{orderItems[__${status.index}__].note}" type="text" class="form-control">
+                        </div>
+                    </div>
                 </div>
+                    <div class="row">
+                        <div class="col form-group">Total</div>
+                        <div class="col form-group">
+                        <input th:name="totalPrice" type="hidden" th:id="totalAmtHidden" class="form-control">
+                        <input th:name="isPaid" type="hidden" th:id="isPaidHidden" class="form-control" th:value="${orderStatusBool}">
+                        </div>
+                        <div class="col form-group" id="totalQuantity"></div>
+                        <div class="col form-group" id="totalAmt"></div>
+                        <div class="col form-group"></div>
+                    </div>
+            </div>
+        </div>
+         
+        
+ 					
+ 					
+ 					
+ 		<!-- trying form tymleaf -->			
+ 					
+   </div>
+                    
+                    <div class="modal-footer">
+                   <p id="placeOrderMessage" style="font-style: oblique; font-size: medium; font-weight: 100; color: honeydew; display: none; padding-top: 30%;">Your order has been placed. Minimum waiting time is 15 minutes. Thank You.</p>
+                    <button type="submit" onClick="placeOrder()" id="place" class="btn button-style button-style-2" style="float: right;background-color:   honeydew; color: #28a745;">Place Order</button>
+             		 </div>
+                </div>
+    </form>	
 
             </div>
             <!-- modal ends here ==========  -->
-            <!-- <div class="another-sec">
-                <h3 class="title-big mb-2">Dinner</h3>
-                <div class="row menu-body">
-                    Section starts: Dinner
-                    <div class="col-lg-6 menu-section pr-lg-5">
-                        Item starts
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="assets/images/menu10.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>The Ultimate Veggie</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>$52</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Lorem ipsum dolor sit amet, consectetur tredjh adipiscing elit.</p>
-                                </div>
-                            </div>
-                        </div>
-                        Item ends
-                        Item starts
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="assets/images/menu14.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Chicken grill with sauce</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>$46</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Lorem ipsum dolor sit amet, consectetur tredjh adipiscing elit.</p>
-                                </div>
-                            </div>
-                        </div>
-                        Item ends
-                        Item starts
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="assets/images/menu7.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Quinoa Fruit Salad</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>$56</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Lorem ipsum dolor sit amet, consectetur tredjh adipiscing elit.</p>
-                                </div>
-                            </div>
-                        </div>
-                        Item ends
-                    </div>
-                    Section ends: Dinner
-
-                    Section starts: Dinner
-                    <div class="col-lg-6 menu-section pl-lg-5">
-                        Item starts
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="assets/images/menu2.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Avocado Toast with Egg</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>$26</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Lorem ipsum dolor sit amet, consectetur tredjh adipiscing elit.</p>
-                                </div>
-                            </div>
-                        </div>
-                        Item ends
-                        Item starts
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="assets/images/menu1.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Tomato Toast Ricotta</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>$26</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Lorem ipsum dolor sit amet, consectetur tredjh adipiscing elit.</p>
-                                </div>
-                            </div>
-                        </div>
-                        Item ends
-                        Item starts
-                        <div class="row menu-item">
-                            <div class="col-3 p-0 position-relative">
-                                <img src="assets/images/menu9.jpg" class="img-responsive" alt="">
-                                <a href="#order" class="btn button-style button-style-2">Add</a>
-                            </div>
-                            <div class="col-9 pl-4">
-                                <div class="row no-gutters">
-                                    <div class="col-9 menu-item-name">
-                                        <h6>Grilled Lamb & Feta Pita</h6>
-                                    </div>
-                                    <div class="col-3 menu-item-price text-right">
-                                        <h6>$72</h6>
-                                    </div>
-                                </div>
-                                <div class="menu-item-description">
-                                    <p>Lorem ipsum dolor sit amet, consectetur tredjh adipiscing elit.</p>
-                                </div>
-                            </div>
-                        </div>
-                        Item ends
-                    </div>
-                    Section ends: Dinner
-                </div>
-            </div>
-       -->  </div>
+            <input type ="hidden" id ="orderStatus" name="orderStatus" th:value="${orderStatus}">
+			<input type="hidden" id ="orderStatusBool" name="orderStatusBool" th:value="${orderStatusBool}">
+            
+              </div>
     </div>
-    <!-- //menu -->
-    <!-- promocode section -->
-    <!-- <section class="w3l-promocode">
-        <div class="promo-block pt-md-0 pt-4">
-            <div class="container">
-                <div class="row aap-4-section">
-                    <div class="col-lg-6 app4-right-image">
-                        <img src="/images/img3.png" class="img-responsive" alt="App Device" />
-                    </div>
-                    <div class="col-lg-6 app4-left-text pl-lg-0 mb-lg-0 mb-sm-2 mb-4">
-                        <h6>For 30% Discount</h6>
-                        <h4>Get Our Promocode Now</h4>
-                        <p class="mb-4"> Uspendisse efficitur orci urna. In et augue ornare, tempor massa in, luctus
-                            sapien. Proin a
-                            diam et dui fermentum molestie vel id neque. </p>
-                        <div class="app-4-connection">
-                            <div class="newsletter">
-                                <label>Never Miss a Deal From Foodies</label>
-                                <form action="#" methos="GET" class="d-flex wrap-align">
-                                    <input type="email" placeholder="Enter your email id" required="required" />
-                                    <button type="submit">Get Promocode</button>
-                                </form>
-                            </div>
-                            <p class="mobile-text-app mt-4 pt-2">(Or) To Get Our Mobile Apps</p>
-                            <div class="app-4-icon">
-                                <ul>
-                                    <li><a href="#url" title="Apple" class="app-icon apple-vv"><span class="fa fa-apple"
-                                                aria-hidden="true"></span></a></li>
-                                    <li><a href="#url" title="Google play" class="app-icon play-vv"><span
-                                                class="fa fa-play" aria-hidden="true"></span></a></li>
-                                    <li><a href="#url" title="Microsoft" class="app-icon windows-vv"><span
-                                                class="fa fa-windows" aria-hidden="true"></span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!-- //promocode section -->
-    <!-- footer -->
-    <!-- <section class="w3l-footer-16">
-        <div class="w3l-footer-16-main">
-            <div class="container">
-                <div class="row footer-p">
-                    <div class="col-lg-4 pr-lg-5">
-                        <a class="logo" href="index.html"><i class="fa fa-cutlery" aria-hidden="true"></i>
-                            Foodies</a>
-                        <p class="mt-4">Duis imperdiet sapien tortor, vitae congue diam auctor vitae. Aliquam
-                            eget turpis ornare, euismod ligul aeget, enenatis dui. </p>
-                    </div>
-                    <div class="col-lg-4 mt-lg-0 mt-4">
-                        <h3>Pages</h3>
-                        <div class="row">
-                            <div class="col-6 column">
-                                <ul class="footer-gd-16">
-                                    <li><a href="index.html"><i class="fa fa-angle-right"
-                                                aria-hidden="true"></i>Home</a></li>
-                                    <li><a href="about.html"><i class="fa fa-angle-right" aria-hidden="true"></i>About
-                                            Us</a></li>
-                                    <li><a href="#services"><i class="fa fa-angle-right"
-                                                aria-hidden="true"></i>Services</a></li>
-                                    <li><a href="#blog"><i class="fa fa-angle-right" aria-hidden="true"></i>Blog
-                                            Posts</a></li>
-                                    <li><a href="contact.html"><i class="fa fa-angle-right"
-                                                aria-hidden="true"></i>Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-6 column pl-0">
-                                <ul class="footer-gd-16">
-                                    <li><a href="menu.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Foodies
-                                            Menu</a></li>
-                                    <li><a href="#privacy"><i class="fa fa-angle-right" aria-hidden="true"></i>Privacy
-                                            Policy</a></li>
-                                    <li><a href="#terms"><i class="fa fa-angle-right" aria-hidden="true"></i>Terms
-                                            and
-                                            conditions</a></li>
-                                    <li><a href="#faq"><i class="fa fa-angle-right" aria-hidden="true"></i>FAQ</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-7 column mt-lg-0 mt-4">
-                        <h3>Newsletter </h3>
-                        <div class="end-column">
-                            <h3>Subscribe Here Now</h3>
-                            <form action="#" class="subscribe" method="post">
-                                <input type="email" name="email" placeholder="Email Address" required="">
-                                <button><span class="fa fa-paper-plane" aria-hidden="true"></span></button>
-                            </form>
-                            <p>Subscribe to our mailing list and get updates to your email inbox.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex below-section justify-content-between align-items-center pt-4 mt-5">
-                    <div class="columns text-lg-left">
-                        <p class="copy-text">@ 2020 Foodies. All rights reserved. Design by <a
-                                href="https://w3layouts.com/" target="_blank">
-                                W3Layouts</a>
-                        </p>
-                    </div>
-                    <div class="columns-2 mt-md-0 mt-3">
-                        <ul class="social">
-                            <li><a href="#facebook"><span class="fa fa-facebook" aria-hidden="true"></span></a>
-                            </li>
-                            <li><a href="#linkedin"><span class="fa fa-linkedin" aria-hidden="true"></span></a>
-                            </li>
-                            <li><a href="#twitter"><span class="fa fa-twitter" aria-hidden="true"></span></a>
-                            </li>
-                            <li><a href="#google"><span class="fa fa-google-plus" aria-hidden="true"></span></a>
-                            </li>
-                            <li><a href="#github"><span class="fa fa-github" aria-hidden="true"></span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!-- //footer -->
+        <!-- //footer -->
 
     <!-- Js scripts -->
     <!-- move top -->
     <button onclick="topFunction()" id="movetop" title="Go to top">
         <span class="fa fa-level-up" aria-hidden="true"></span>
     </button>
+    
     <script>
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function () {
@@ -705,68 +286,7 @@ Author URL: http://w3layouts.com
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
-//global cart for food items
-        var cartDict = {};
 
-        function addToCart(item,btnid,btngrpid,itemid){
-            let x = document.getElementById(btnid);
-            let y = document.getElementById(btngrpid);
-            x.style.display = "none";
-            y.style.display = "inline-block";
-            y.style.width= "max-content";
-
-            cartDict[item] = 1;
-            let z = document.getElementById(itemid).innerHTML = cartDict[item];
-        }
-
-        function addOne(item,id){
-            cartDict[item] = cartDict[item] + 1;
-            document.getElementById(id).innerHTML = cartDict[item];
-        }
-        function removeOne(item,btnid,btngrpid,itemid){
-            for(var key in cartDict){
-                console.log("------>"+key,cartDict[key]);
-            }
-            if(cartDict[item] > 1){
-                cartDict[item] = cartDict[item] - 1;
-                document.getElementById(itemid).innerHTML = cartDict[item];
-            }
-            else{
-                document.getElementById(btngrpid).style.display = "none";
-                document.getElementById(btnid).style.display = "inline-block";
-            }
-        }
-        function placeOrder(){
-            document.getElementById('placeOrderMessage').style.display = "block";
-            document.getElementById('place').style.display = "none";
-        }
-        var modal = document.getElementById("myModal");
-
-        var btn = document.getElementById("myBtn");
-
-        var span = document.getElementsByClassName("close")[0];
-
-        
-        btn.onclick = function() {
-        modal.style.display = "block";
-        document.getElementById('cart').innerHTML = "Item ------ : ------ Count </br>"
-        for(var key in cartDict){
-            document.getElementById('cart').innerHTML += key +" : "+cartDict[key] + "</br>";
-        }
-        }
-
-       
-        span.onclick = function() {
-        modal.style.display = "none";
-        }
-
-        
-        window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-        }
-        //modal end
     </script>
     <!-- //move top -->
 
@@ -776,6 +296,7 @@ Author URL: http://w3layouts.com
 
     <!-- theme switch js (light and dark)-->
     <script src="/js/theme-change.js"></script>
+    <script src="/js/cart.js"></script>
     <script>
         function autoType(elementClass, typingSpeed) {
             var thhis = $(elementClass);
@@ -841,7 +362,12 @@ Author URL: http://w3layouts.com
         });
     </script>
     <!-- //MENU-JS -->
-
+		<script>
+		 function readyFunction () {
+			$('#menu > div').find(".another-sec").each(function() {  checkIfEmpty(this.id);  });
+			checkIfNoItemsAvailable();
+		}
+		</script>
     <!-- disable body scroll which navbar is in active -->
     <script>
         $(function () {

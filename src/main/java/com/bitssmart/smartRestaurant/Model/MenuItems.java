@@ -61,9 +61,9 @@ public class MenuItems {
 	@Column(name = "isVeg", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isVeg;
 	
-	@Temporal(TemporalType.TIMESTAMP )
 	@CreationTimestamp
-	@Column(name = "created_at")
+	@Temporal(TemporalType.TIMESTAMP )
+	@Column(name = "created_at", columnDefinition = "timestamp default current_timestamp")
 	private Date creatededAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -74,11 +74,13 @@ public class MenuItems {
 	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isEnabled;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private Restaurant restaurantId;
 	
+	@ToString.Exclude
 	@OneToMany(mappedBy = "menuItemId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn

@@ -43,9 +43,9 @@ public class FoodOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Temporal(TemporalType.TIMESTAMP )
 	@CreationTimestamp
-	@Column(name = "created_at")
+	@Temporal(TemporalType.TIMESTAMP )
+	@Column(name = "created_at", columnDefinition = "timestamp default current_timestamp")
 	private Date creatededAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -72,6 +72,7 @@ public class FoodOrder {
 	@OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
+	@ToString.Exclude
 	private List<OrderItem> orderItems;
 	
 	@ManyToOne

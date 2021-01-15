@@ -11,15 +11,17 @@ import com.bitssmart.smartRestaurant.Model.Customer;
 @Controller
 public class MainController {
 
-	@RequestMapping("/home")    
-	public String home(){
-		return "index";
-	}
-	
-	@RequestMapping("/menu")    
-	public String menu(){
-		return "menu";
-	}
+//	@RequestMapping("/home")    
+//	public String home()  
+//	{
+//		return "restaurants";
+//	}
+//	@RequestMapping("/menu")    
+//	public String menu()  
+//	{
+//		
+//		return "menu";
+//	}
 	
 	@RequestMapping("/customerDetails")
 //	@RequestMapping(value = "/customerDetails", method =RequestMethod.GET)
