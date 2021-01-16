@@ -63,8 +63,33 @@ public class Customer {
 	@Column(name = "isVIP", columnDefinition = "boolean default false", nullable = false)
 	private Boolean isVIP;
 	
+	@ToString.Exclude
 	@OneToMany(mappedBy = "customerID", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private List<FoodOrder> orderId;
+
+//	public String getName() {
+//		return name;
+//	}
+//
+//	public void setName(String name) {
+//		this.name = name;
+//	}
+//
+//	public String getPhoneNumber() {
+//		return phoneNumber;
+//	}
+//
+//	public void setPhoneNumber(String phoneNumber) {
+//		this.phoneNumber = phoneNumber;
+//	}
+//
+//	public String getEmail() {
+//		return email;
+//	}
+//
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
 }
