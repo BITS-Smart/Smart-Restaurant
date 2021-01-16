@@ -1,21 +1,30 @@
 package com.bitssmart.smartRestaurant.Controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bitssmart.smartRestaurant.Model.Customer;
 import com.bitssmart.smartRestaurant.Model.FoodOrder;
 import com.bitssmart.smartRestaurant.Model.OrderStatus;
 import com.bitssmart.smartRestaurant.Service.OrderService;
+import com.bitssmart.smartRestaurant.Service.CustomerService;
 
 @Controller
 public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	@RequestMapping(value="/placeOrder", method=RequestMethod.POST)    
 	public ModelAndView save(@ModelAttribute("orderObj") FoodOrder foodOrder)  
@@ -43,8 +52,67 @@ public class OrderController {
 		 * modelAndView.addObject("orderid",foodOrder.getId());
 		 * return modelAndView;
 		 */
-		return null; 
 		
+//		ModelAndView modelAndView = new ModelAndView();    
+//		modelAndView.setViewName("customerDetails");
+//		return new ModelAndView("redirect:/customerDetails");
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("orderid",foodOrder.getId());
+		modelAndView.setViewName("redirect:/customerDetails");
+//		modelAndView.addObject("orderid",foodOrder.getId());
+		return modelAndView;
+		
+		
+	}
+	
+	@RequestMapping("/customerDetails")
+//	@RequestMapping(value = "/customerDetails", method =RequestMethod.GET)
+	public String customerDetails(Model model, @ModelAttribute("orderid") FoodOrder fid){
+		Customer customer = new Customer();
+		model.addAttribute("customer",customer);
+		System.out.println("In customerDetails get method"+fid);
+		return "customerDetails";
+	}
+	
+	@RequestMapping(value = "/customerDetails", method =RequestMethod.POST)
+	public String mapCustomerDetails(@ModelAttribute("customer") Customer customer){
+		FoodOrder fo = orderService.getFoodOrder(1L);
+//		System.out.println(customer.getName()+" "+customer.getEmail()+" "+customer.getPhoneNumber());
+		System.out.println(customer);
+		List<FoodOrder> foodList= customer.getOrderId();
+		if(null != foodList) {
+			foodList.add(fo);
+		}
+		else {
+			foodList = new ArrayList<>();
+			foodList.add(fo);
+		}
+		
+		System.out.println("fhbe"+fo);
+		System.out.println("Foodlist"+foodList);
+		customer.setOrderId(foodList);
+		customer.setIsVIP(false);
+		customer.setId( null != (customerService.findByPhoneNumber(customer)) ? (customerService.findByPhoneNumber(customer)).getId() : null);
+		
+		customer.setCreatededAt( null != (customerService.findByPhoneNumber(customer)) ? (customerService.findByPhoneNumber(customer)).getCreatededAt() : null);
+		System.out.println("GetOrderID"+customer.getOrderId());
+		
+		Customer cs = customerService.saveCustomerDetails(customer);
+		
+		
+		customer.getOrderId().get(0).setCustomerID(cs);
+		customerService.saveCustomerDetails(customer);
+		System.out.println("Hvbwde"+customer.getOrderId());
+		
+		return "redirect:/billDetails";
+//		return "customerDetails";
+	}
+	
+	@RequestMapping("/billDetails")
+//	@RequestMapping(value = "/customerDetails", method =RequestMethod.GET)
+	public String billDetails(){
+		return "contact";
 	}
 
 }

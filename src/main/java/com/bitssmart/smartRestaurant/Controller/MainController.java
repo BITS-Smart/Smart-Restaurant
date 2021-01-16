@@ -23,20 +23,20 @@ public class MainController {
 //		return "menu";
 //	}
 	
-	@RequestMapping("/customerDetails")
+//	@RequestMapping("/customerDetails")
 //	@RequestMapping(value = "/customerDetails", method =RequestMethod.GET)
-	public String customerDetails(Model model){
-		Customer customer = new Customer();
-		model.addAttribute("customer",customer);
-		return "customerDetails";
-	}
-	
-	@RequestMapping(value = "/customerDetails", method =RequestMethod.POST)
-	public String mapCustomerDetails(@ModelAttribute("customer") Customer customer){
-		System.out.println(customer.getName()+" "+customer.getEmail()+" "+customer.getPhoneNumber());	
-		return "redirect:/menu";
+//	public String customerDetails(Model model){
+//		Customer customer = new Customer();
+//		model.addAttribute("customer",customer);
 //		return "customerDetails";
-	}
+//	}
+//	
+//	@RequestMapping(value = "/customerDetails", method =RequestMethod.POST)
+//	public String mapCustomerDetails(@ModelAttribute("customer") Customer customer){
+//		System.out.println(customer.getName()+" "+customer.getEmail()+" "+customer.getPhoneNumber());	
+//		return "redirect:/menu";
+////		return "customerDetails";
+//	}
 	
 	
 	/*

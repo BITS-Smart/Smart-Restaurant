@@ -29,7 +29,7 @@ public class RestaurantController {
 		List<Restaurant> restaurants = restaurantService.getAllRestaurants();
 		ModelAndView modelAndView = new ModelAndView();   
 		modelAndView.addObject("restaurantList",restaurants);
-		modelAndView.setViewName("restaurants");     
+		modelAndView.setViewName("restaurants");
 		return modelAndView;
 	}
 	
