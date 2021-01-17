@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bitssmart.smartRestaurant.Model.FoodOrder;
 import com.bitssmart.smartRestaurant.Model.OrderItem;
+import com.bitssmart.smartRestaurant.Model.Restaurant;
 import com.bitssmart.smartRestaurant.Repository.OrderRepository;
 import com.bitssmart.smartRestaurant.ResponseVO.ShowOrderVO;
 
@@ -42,5 +43,9 @@ public class OrderService {
 			id++;
 		}
 		return showOrderVOList;
+	}
+	
+	public FoodOrder getFoodOrder(Long id) {
+		return orderRepository.findById(id).orElse(null);
 	}
 }
