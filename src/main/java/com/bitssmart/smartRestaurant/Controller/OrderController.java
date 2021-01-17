@@ -109,16 +109,11 @@ public class OrderController {
 		customerService.saveCustomerDetails(customer);
 		System.out.println("Hvbwde"+customer.getOrderId());
 		
-		return "redirect:/billDetails";
+		return "redirect:/showOrderBill";
 //		return "customerDetails";
 	}
 	
-	@RequestMapping("/billDetails")
-//	@RequestMapping(value = "/customerDetails", method =RequestMethod.GET)
-	public String billDetails(){
-		return "contact";
-	}
-	
+
 	@RequestMapping(value="/showOrderBill", method=RequestMethod.POST)    
 	public ModelAndView showOrderBill(@RequestParam long foodOrderId)  
 	{
