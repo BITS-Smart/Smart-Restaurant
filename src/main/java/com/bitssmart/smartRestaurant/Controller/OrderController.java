@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bitssmart.smartRestaurant.Model.Customer;
@@ -59,26 +60,36 @@ public class OrderController {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("orderid",foodOrder.getId());
-		modelAndView.setViewName("redirect:/customerDetails");
+		Customer customer = new Customer();
+		modelAndView.addObject("customer",customer);
+		modelAndView.setViewName("customerDetails");
 //		modelAndView.addObject("orderid",foodOrder.getId());
 		return modelAndView;
 		
 		
 	}
 	
-	@RequestMapping("/customerDetails")
-//	@RequestMapping(value = "/customerDetails", method =RequestMethod.GET)
-	public String customerDetails(Model model, @ModelAttribute("orderid") FoodOrder fid){
-		Customer customer = new Customer();
-		model.addAttribute("customer",customer);
-		System.out.println("In customerDetails get method"+fid);
-		return "customerDetails";
-	}
+//	@RequestMapping("/customerDetails")
+//	@RequestMapping(value = "/customerDetails", method =RequestMethod.POST)
+//	public String customerDetails(Model model, @RequestParam long orderid){
+//		Customer customer = new Customer();
+//		FoodOrder fo = new FoodOrder();
+//		fo.setId(orderid);
+//		model.addAttribute("orderid",fo.getId());
+//		model.addAttribute("customer",customer);
+//		System.out.println("In customerDetails get method"+orderid + fo);
+//		return "customerDetails";
+//	}
 	
 	@RequestMapping(value = "/customerDetails", method =RequestMethod.POST)
-	public String mapCustomerDetails(@ModelAttribute("customer") Customer customer){
-		FoodOrder fo = orderService.getFoodOrder(1L);
+	public String mapCustomerDetails(@ModelAttribute("customer") Customer customer, @ModelAttribute("orderid") FoodOrder orderid){
+		
+		
+		System.out.println("------------"+orderid);
+		FoodOrder fo = orderService.getFoodOrder(orderid.getId());
 //		System.out.println(customer.getName()+" "+customer.getEmail()+" "+customer.getPhoneNumber());
+		
+		System.out.println("------------"+orderid);
 		System.out.println(customer);
 		List<FoodOrder> foodList= customer.getOrderId();
 		if(null != foodList) {
@@ -100,8 +111,14 @@ public class OrderController {
 		
 		Customer cs = customerService.saveCustomerDetails(customer);
 		
+//		customer.getOrderId().get(0).setCustomerID(cs);
 		
-		customer.getOrderId().get(0).setCustomerID(cs);
+		for(int i = 0; i< customer.getOrderId().size();i++) {
+			customer.getOrderId().get(i).setCustomerID(cs);
+		}
+		
+
+		
 		customerService.saveCustomerDetails(customer);
 		System.out.println("Hvbwde"+customer.getOrderId());
 		
