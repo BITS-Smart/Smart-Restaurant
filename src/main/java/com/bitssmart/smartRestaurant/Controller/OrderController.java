@@ -130,13 +130,13 @@ public class OrderController {
 	}
 	
 
-	@RequestMapping(value="/showOrderBill", method=RequestMethod.POST)    
-	public ModelAndView showOrderBill(@RequestParam long foodOrderId)  
+	@RequestMapping(value="/showOrderBill", method=RequestMethod.GET)    
+	public ModelAndView showOrderBill(@RequestParam long orderId)  
 	{
-		System.out.println(foodOrderId);
+		System.out.println(orderId);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("bill");
-		List<ShowOrderVO> showOrderVOList=orderService.showOrderBill(foodOrderId);
+		List<ShowOrderVO> showOrderVOList=orderService.showOrderBill(orderId);
 		modelAndView.addObject("showOrderBill",showOrderVOList);
 		modelAndView.addObject("overAllTotalPrice", showOrderVOList.get(0).getOverAllTotalPrice());
 		return modelAndView; 
