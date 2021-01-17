@@ -1,15 +1,21 @@
 package com.bitssmart.smartRestaurant.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bitssmart.smartRestaurant.Model.FoodOrder;
 import com.bitssmart.smartRestaurant.Model.OrderStatus;
+import com.bitssmart.smartRestaurant.ResponseVO.ShowOrderVO;
 import com.bitssmart.smartRestaurant.Service.OrderService;
+
+
 
 @Controller
 public class OrderController {
@@ -45,6 +51,18 @@ public class OrderController {
 		 */
 		return null; 
 		
+	}
+	
+	@RequestMapping(value="/showOrderBill", method=RequestMethod.POST)    
+	public ModelAndView showOrderBill(@RequestParam long foodOrderId)  
+	{
+		System.out.println(foodOrderId);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("bill");
+		List<ShowOrderVO> showOrderVOList=orderService.showOrderBill(foodOrderId);
+		modelAndView.addObject("showOrderBill",showOrderVOList);
+		modelAndView.addObject("overAllTotalPrice", showOrderVOList.get(0).getOverAllTotalPrice());
+		return modelAndView; 
 	}
 
 }

@@ -1,0 +1,113 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>BITS Smart Restaurant</title>
+    <!-- google-fonts -->
+    <!-- <link href="//fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet"> -->
+    <!-- //google-fonts -->
+    <!-- Template CSS Style link -->
+    <link rel="stylesheet" href="/css/style-starter.css">
+</head>
+
+<body>
+    <header id="site-header" class="fixed-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg stroke px-0">
+                <h1>
+                    <a class="navbar-brand" href="/home">
+                        <i class="fa fa-cutlery" aria-hidden="true"></i> Smart Restaurant
+                    </a>
+                </h1>
+                <!-- if logo is image enable this   
+    <a class="navbar-brand" href="#index.html">
+        <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
+    </a> -->
+                <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
+                    data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+                    <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Home <!-- <span class="sr-only">(current)</span> --></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:show_menu();">Menu</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- search button -->
+                <!-- //search button -->
+                <!-- toggle switch for light and dark theme -->
+                <div class="cont-ser-position">
+                    <nav class="navigation">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox">
+                                <div class="mode-container">
+                                    <i class="gg-sun"></i>
+                                    <i class="gg-moon"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </nav>
+                </div>
+                <!-- //toggle switch for light and dark theme -->
+            </nav>
+        </div>
+    </header>
+<main>
+<div style="overflow-x:auto;">
+<table class="table table-striped" style="margin-top:100px;">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                    <tr th:each="bill : ${showOrderBill}">
+					<td th:text="${bill.id}">Id</td>
+					<td th:text="${bill.menuItemName}">Name</td>
+					<td th:text="${bill.quantity}">Quantity</td>		
+                    <td th:text="${bill.price}">Price</td>
+                    <td th:text="${bill.totalPrice}">Total Price</td>
+                    </tr>   
+					
+					<tr>
+					<td colspan=4 align="center"><b>Bill To Be Paid:</b> </td>
+					<td th:text="${overAllTotalPrice}" style="font-weight:800"></td>
+					</tr>
+				</tbody>
+</table>
+</div>>
+<hr>
+<p align="center"><button type="button" style= "background-color: #008CBA;; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;" id="target">Payment Options</button></p>
+  </main>
+  
+</body>
+
+
+</html>
