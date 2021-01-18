@@ -121,22 +121,23 @@ public class OrderController {
 		}
 		
 
-		
+		ModelAndView modelAndView = new ModelAndView();
 		customerService.saveCustomerDetails(customer);
 		System.out.println("Hvbwde"+customer.getOrderId());
-		
-		return "redirect:/showOrderBill?orderId="+orderid.getId();
+
+		modelAndView.addObject("orderid", orderid);
+		return "redirect:/showOrderBill?orderid="+orderid.getId();
 //		return "customerDetails";
 	}
 	
 
 	@RequestMapping(value="/showOrderBill", method=RequestMethod.GET)    
-	public ModelAndView showOrderBill(@RequestParam long orderId)  
+	public ModelAndView showOrderBill( @ModelAttribute("orderid") long orderid)  
 	{
-		System.out.println(orderId);
+		System.out.println(orderid);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("bill");
-		List<ShowOrderVO> showOrderVOList=orderService.showOrderBill(orderId);
+		List<ShowOrderVO> showOrderVOList=orderService.showOrderBill(orderid);
 		modelAndView.addObject("showOrderBill",showOrderVOList);
 		modelAndView.addObject("overAllTotalPrice", showOrderVOList.get(0).getOverAllTotalPrice());
 		return modelAndView; 
