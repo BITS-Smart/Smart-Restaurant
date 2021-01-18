@@ -53,7 +53,7 @@ Author URL: http://w3layouts.com
                     <div class="title-big mb-5"></div>
                     <h5 class="title-big mb-5">Please provide your details to serve you better...</h5>
                     <!-- <p>Please give us your details to serve you better</p> -->
-                    <form method="post" w3layouts-contact-fm" action="#" th:action="@{/customerDetails}" th:object="${customer}">
+                   <form method="post" class="w3layouts-contact-fm" action="#" th:action="@{/customerDetails}" th:object="${customer}">
                         <div th:object = "${orderid}">
                         	<input th:name="orderid" type="hidden" th:id="orderidHidden" class="form-control" th:value="${orderid}">
                        	</div>
