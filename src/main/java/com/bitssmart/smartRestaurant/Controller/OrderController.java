@@ -125,7 +125,7 @@ public class OrderController {
 		customerService.saveCustomerDetails(customer);
 		System.out.println("Hvbwde"+customer.getOrderId());
 		
-		return "redirect:/showOrderBill";
+		return "redirect:/showOrderBill?orderId="+orderid.getId();
 //		return "customerDetails";
 	}
 	
