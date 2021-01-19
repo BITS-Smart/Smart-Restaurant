@@ -1,8 +1,12 @@
-name: my first workflow for a java project
+name: Java project works
 on:
   push:
-    branches: [ ci-pipeline ]
-
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - prototype
 jobs:
   publish:
     runs-on: ubuntu-latest
