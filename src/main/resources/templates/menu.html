@@ -1,0 +1,387 @@
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>BITS Smart Restaurant</title>
+    <!-- google-fonts -->
+    <!-- <link href="//fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet"> -->
+    <!-- //google-fonts -->
+    <!-- Template CSS Style link -->
+    <link rel="stylesheet" href="/css/style-starter.css">
+</head>
+
+<body onload="readyFunction()">
+    <!--header-->
+    <header id="site-header" class="fixed-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg stroke px-0">
+                <h1>
+                    <a class="navbar-brand" href="/home">
+                        <i class="fa fa-cutlery" aria-hidden="true"></i>  Smart Restaurant
+                    </a>
+                </h1>
+                <!-- if logo is image enable this   
+    <a class="navbar-brand" href="#index.html">
+        <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
+    </a> -->
+                <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
+                    data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+                    <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                     <ul class="navbar-nav mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About Us</a>
+                        </li>
+                        <!--<li class="nav-item active">
+                            <a class="nav-link" href="menu.html">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact Us</a>
+                        </li>-->
+                    </ul> 
+                </div>
+                <!-- search button -->
+                <div class="search-right">
+                    <a href="#" id="myBtn">
+                        <i class="fa fa-shopping-cart" style="font-size:24px"></i>
+                        <span class='badge badge-warning' id='lblCartCount'></span>
+                    </a>
+                </div>
+                <!-- //search button -->
+                <!-- toggle switch for light and dark theme -->
+                <div class="cont-ser-position">
+                    <nav class="navigation">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox">
+                                <div class="mode-container">
+                                    <i class="gg-sun"></i>
+                                    <i class="gg-moon"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </nav>
+                </div>
+                <!-- //toggle switch for light and dark theme -->
+            </nav>
+        </div>
+    </header>
+    <!--//header-->
+    <!-- inner banner -->
+    <!-- <div class="inner-banner">
+        
+    </div> -->
+    <!-- //inner banner -->
+    <!-- menu -->
+    <div class="menu-w3ls py-5" id="menu">
+        <div class="container py-md-4 py-3" id="mainDiv">
+        <div class="another-sec" th:id="'anthrSecDivId' +${iterStatCat.index}" th:each="foodCat,iterStatCat : ${foodCategory}" th:attr="onload=|checkIfEmpty(this.id);|">
+            <h2 class="title-big mb-2" th:text="${foodCat}"></h2>
+            <div class="row menu-body">
+                <!-- Section starts: Breakfast -->
+                <div class="col-lg-6 menu-section">
+                    <!-- Item starts -->
+                    <!-- iterStat.odd -->
+                    <div class="row menu-item"  th:each="mItems,iterStat : ${restaurant.menuitems}" th:if="${mItems.isVeg and #strings.startsWith(mItems.foodCategory, foodCat) and not #lists.isEmpty(mItems) and mItems.isEnabled}">
+                        <div class="col-3 p-0 position-relative">
+                            <img th:src="@{'/images/'+${mItems.name}+'.jpg'}" class="img-responsive" th:onerror="'this.onerror=null; this.src=\'' + @{/images/DefaultFoodImg.jpg} + '\';'" alt=""> 
+                           
+                            <!-- + - for adding items -->
+                            <button th:id="${iterStatCat.index}+'add' +${iterStat.index}+'veg'" th:attr="onclick=|addToCart('${mItems.name}',this.id,'${iterStatCat.index}grpVeg${iterStat.index}','${iterStatCat.index}countVeg${iterStat.index}','${mItems.id}','${mItems.price}')|"  class="btn button-style button-style-2" >Add</button>
+                            <div class="btn-group" th:id="${iterStatCat.index}+'grpVeg' +${iterStat.index}"style=" display:none;float: left;">
+                             <button class="btn  button-style-2" th:attr="onclick=|removeOne('${mItems.name}','${iterStatCat.index}add${iterStat.index}veg','${iterStatCat.index}grpVeg${iterStat.index}','${iterStatCat.index}countVeg${iterStat.index}')|">-</button>
+                             <button class="btn button-style-2" th:id="${iterStatCat.index}+'countVeg' +${iterStat.index}"></button>
+                                <button class="btn  button-style-2" th:attr="onclick=|addOne('${mItems.name}','${iterStatCat.index}countVeg${iterStat.index}')|">+</button> 
+                          
+                        </div>
+                            </div>
+                        <div class="col-9 pl-4">
+                            <div class="row no-gutters">
+                                <div class="col-9 menu-item-name">
+                                    <h6 th:text="${mItems.name} " ></h6>
+                                </div>
+                                <div class="col-3 menu-item-price text-right">
+                                    <h6 th:text="'₹' +${mItems.price} "></h6>
+                                </div>
+                            </div>
+                            <div class="menu-item-description">
+                                <p th:text="${mItems.description} "></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item ends -->
+                   
+                </div>
+                <!-- Section ends: Breakfast -->
+
+                <!-- Section starts: Breakfast -->
+                <div class="col-lg-6 menu-section pl-lg-5">
+                    <!-- Item starts -->
+                    <div class="row menu-item"  th:each="mItems,iterStat : ${restaurant.menuitems}" th:if="${not mItems.isVeg and #strings.startsWith(mItems.foodCategory, foodCat) and not #lists.isEmpty(mItems) and mItems.isEnabled}">
+                        <div class="col-3 p-0 position-relative">
+                            <img th:src="@{'/images/'+${mItems.name}+'.jpg'}" class="img-responsive"   th:onerror="'this.onerror=null; this.src=\'' + @{/images/DefaultFoodImg.jpg} + '\';'" alt="Img not found"> 
+                           
+                            <!-- + - for adding items -->
+                            <button th:id="${iterStatCat.index}+'add' +${iterStat.index}+'Nveg'" th:attr="onclick=|addToCart('${mItems.name}',this.id,'${iterStatCat.index}grpNVeg${iterStat.index}','${iterStatCat.index}countNVeg${iterStat.index}','${mItems.id}','${mItems.price}')|"  class="btn button-style button-style-2" >Add</button>
+                            <div class="btn-group" th:id="${iterStatCat.index}+'grpNVeg' +${iterStat.index}"style=" display:none;float: left;">
+                             <button class="btn  button-style-2" th:attr="onclick=|removeOne('${mItems.name}','${iterStatCat.index}add${iterStat.index}Nveg','${iterStatCat.index}grpNVeg${iterStat.index}','${iterStatCat.index}countNVeg${iterStat.index}')|">-</button>
+                             <button class="btn button-style-2" th:id="${iterStatCat.index}+'countNVeg' +${iterStat.index}"></button>
+                                <button class="btn  button-style-2" th:attr="onclick=|addOne('${mItems.name}','${iterStatCat.index}countNVeg${iterStat.index}')|">+</button> 
+                          
+                        </div>
+                            </div>
+                        <div class="col-9 pl-4">
+                            <div class="row no-gutters">
+                                <div class="col-9 menu-item-name">
+                                    <h6 th:text="${mItems.name} " ></h6>
+                                </div>
+                                <div class="col-3 menu-item-price text-right">
+                                    <h6 th:text="'₹' +${mItems.price} "></h6>
+                                </div>
+                            </div>
+                            <div class="menu-item-description">
+                                <p th:text="${mItems.description} "></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item ends -->
+                    
+                </div>
+                <!-- Section ends: Breakfast -->
+            </div></div>
+
+            
+			<!-- <div class="menu-w3ls py-5" style="font-size: xx-large;" th:unless="${not #lists.isEmpty(restaurant.menuitems)}">
+				   <div>No Items Available</div>
+			</div> -->
+				            
+         
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+ 				<form th:object="${orderObj}" method="post" th:action="${'/placeOrder'}">
+                <!-- Modal content -->
+                <div class="modal-content" style="background-color: #28a745;
+                margin: 15% auto; 
+                padding: 20px;
+                border: 1px solid #888;
+                width: 50%; 
+                height: 50%;
+                overflow-y: initial; ">
+                    <span class="close">&times;</span>
+                    <h3 class="modal-title" style="font-size: large; font-weight: 400; color: honeydew; text-align: center;">Your Cart Details.</h3>
+                    
+                    <div class="modal-body" style="overflow-y: auto;">
+                    
+                  
+ <!-- trying form thmleaf  -->
+ 					
+ 					
+ 					
+       
+<!--INPUT FIELDS-->
+        <div class="row" style="overflow-y: auto;font-style: oblique; font-size: medium; font-weight: 100; color: honeydew; ">
+            <div class="col">
+
+         
+
+                <div id="movieList">
+                    <div class="row">
+                        <div class="col form-group">id</div>
+                        <div class="col form-group">item</div>
+                        <div class="col form-group">quantity</div>
+                        <div class="col form-group">price</div>
+                        <div class="col form-group">requests</div>
+                    </div>
+                    <div class="row item" th:each="movie, status : ${orderObj.orderItems}">
+                        <div class="col form-group">
+                        <p ></p>
+                            <input th:field="*{orderItems[__${status.index}__].menuItemId}" class="form-control" type ="hidden">
+                        </div>
+                        <div class="col form-group">
+                        <p th:id="'itemName'+${status.index}"></p>
+                        </div>
+                        <div class="col form-group">
+                            <input th:field="*{orderItems[__${status.index}__].quantity}" readonly class="form-control">
+                        </div>
+                        <div class="col form-group">
+                        <p th:id="'itemPrice'+${status.index}"></p>
+                        </div>
+                        <div class="col form-group">
+                            <input th:field="*{orderItems[__${status.index}__].note}" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col form-group">Total</div>
+                        <div class="col form-group">
+                        <input th:name="totalPrice" type="hidden" th:id="totalAmtHidden" class="form-control">
+                        <input th:name="isPaid" type="hidden" th:id="isPaidHidden" class="form-control" th:value="${orderStatusBool}">
+                        </div>
+                        <div class="col form-group" id="totalQuantity"></div>
+                        <div class="col form-group" id="totalAmt"></div>
+                        <div class="col form-group"></div>
+                    </div>
+            </div>
+        </div>
+         
+        
+ 					
+ 					
+ 					
+ 		<!-- trying form tymleaf -->			
+ 					
+   </div>
+                    
+                    <div class="modal-footer">
+                   <p id="placeOrderMessage" style="font-style: oblique; font-size: medium; font-weight: 100; color: honeydew; display: none; padding-top: 30%;">Your order has been placed. Minimum waiting time is 15 minutes. Thank You.</p>
+                    <button type="submit" onClick="placeOrder()" id="place" class="btn button-style button-style-2" style="float: right;background-color:   honeydew; color: #28a745;">Place Order</button>
+             		 </div>
+                </div>
+    </form>	
+
+            </div>
+            <!-- modal ends here ==========  -->
+            <input type ="hidden" id ="orderStatus" name="orderStatus" th:value="${orderStatus}">
+			<input type="hidden" id ="orderStatusBool" name="orderStatusBool" th:value="${orderStatusBool}">
+            
+              </div>
+    </div>
+        <!-- //footer -->
+
+    <!-- Js scripts -->
+    <!-- move top -->
+    <button onclick="topFunction()" id="movetop" title="Go to top">
+        <span class="fa fa-level-up" aria-hidden="true"></span>
+    </button>
+    
+    <script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+    </script>
+    <!-- //move top -->
+
+    <!-- common jquery plugin -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <!-- //common jquery plugin -->
+
+    <!-- theme switch js (light and dark)-->
+    <script src="/js/theme-change.js"></script>
+    <script src="/js/cart.js"></script>
+    <script>
+        function autoType(elementClass, typingSpeed) {
+            var thhis = $(elementClass);
+            thhis.css({
+                "position": "relative",
+                "display": "inline-block"
+            });
+            thhis.prepend('<div class="cursor" style="right: initial; left:0;"></div>');
+            thhis = thhis.find(".text-js");
+            var text = thhis.text().trim().split('');
+            var amntOfChars = text.length;
+            var newString = "";
+            thhis.text("|");
+            setTimeout(function () {
+                thhis.css("opacity", 1);
+                thhis.prev().removeAttr("style");
+                thhis.text("");
+                for (var i = 0; i < amntOfChars; i++) {
+                    (function (i, char) {
+                        setTimeout(function () {
+                            newString += char;
+                            thhis.text(newString);
+                        }, i * typingSpeed);
+                    })(i + 1, text[i]);
+                }
+            }, 1500);
+        }
+
+        $(document).ready(function () {
+            // Now to start autoTyping just call the autoType function with the 
+            // class of outer div
+            // The second paramter is the speed between each letter is typed.   
+            autoType(".type-js", 200);
+        });
+    </script>
+    <!-- //theme switch js (light and dark)-->
+
+    <!-- MENU-JS -->
+    <script>
+        $(window).on("scroll", function () {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 80) {
+                $("#site-header").addClass("nav-fixed");
+            } else {
+                $("#site-header").removeClass("nav-fixed");
+            }
+        });
+
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function () {
+            $("header").toggleClass("active");
+        });
+        $(document).on("ready", function () {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+            $(window).on("resize", function () {
+                if ($(window).width() > 991) {
+                    $("header").removeClass("active");
+                }
+            });
+        });
+    </script>
+    <!-- //MENU-JS -->
+		<script>
+		 function readyFunction () {
+			$('#menu > div').find(".another-sec").each(function() {  checkIfEmpty(this.id);  });
+			checkIfNoItemsAvailable();
+		}
+		</script>
+    <!-- disable body scroll which navbar is in active -->
+    <script>
+        $(function () {
+            $('.navbar-toggler').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+    </script>
+    <!-- //disable body scroll which navbar is in active -->
+
+    <!--bootstrap-->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- //bootstrap-->
+    <!-- //Js scripts -->
+</body>
+
+</html>
