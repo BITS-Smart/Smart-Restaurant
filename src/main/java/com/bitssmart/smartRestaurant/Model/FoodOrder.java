@@ -80,4 +80,8 @@ public class FoodOrder {
 	@PrimaryKeyJoinColumn
 	private Customer customerID;
 	
+	@OneToOne(mappedBy = "foodOrder", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Payment payment;
+	
 }

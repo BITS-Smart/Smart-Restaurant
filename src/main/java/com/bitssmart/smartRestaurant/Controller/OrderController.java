@@ -124,6 +124,7 @@ public class OrderController {
 		ModelAndView modelAndView = new ModelAndView();
 		customerService.saveCustomerDetails(customer);
 		System.out.println("Hvbwde"+customer.getOrderId());
+
 		modelAndView.addObject("orderid", orderid);
 		return "redirect:/showOrderBill?orderid="+orderid.getId();
 //		return "customerDetails";
