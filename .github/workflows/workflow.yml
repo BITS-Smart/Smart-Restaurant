@@ -1,0 +1,69 @@
+name: Java project works
+on:
+  push:
+    branches:
+      - main
+      - ci-pipeline
+  pull_request:
+    branches:
+      - main
+      - prototype
+      - ci-pipeline
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres:12-alpine
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: smart_restaurant
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: smart_dev
+
+        ports:
+          - 5432:5432
+
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+#          settings-path: ".m2/"
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify
+        env:
+          SQL_DATABASE: smart_dev
+          SQL_USER: smart_restaurant
+          SQL_PASSWORD: password
+          SQL_PORT: ${{ job.services.postgres.ports[5432] }}
+          SQL_HOST: postgres
+#
+#      - uses: actions/cache@v2
+#        with:
+#          path: ~/.m2/repository
+#          key: ${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+#      - name: Publish package
+#        run: mvn $MAVEN_CLI_OPTS clean deploy
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+#      - name: Copying target jar
+#        run: |
+#          mkdir myTarget
+#          cp target/*.jar myTarget
+#      - name: Uploading jar
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: myPackage
+#          path: myTarget

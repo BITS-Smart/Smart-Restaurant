@@ -53,29 +53,35 @@ Author URL: http://w3layouts.com
                     <div class="title-big mb-5"></div>
                     <h5 class="title-big mb-5">Please provide your details to serve you better...</h5>
                     <!-- <p>Please give us your details to serve you better</p> -->
+
                     <form method="post" class="w3layouts-contact-fm" action="#" th:action="@{/customerDetails}" th:object="${customer}">
-                        <div class="row main-cont-sec">
-                            <div class="col-md-8 mr-auto ml-auto">
-                                <div class="form-group">
-                                    <label for="w3lName">Name</label>
-                                    <input class="form-control" type="text" name="w3lName" id="w3lName" placeholder=""
-                                        required="" th:field = "*{name}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="w3lName">Email</label>
-                                    <input class="form-control" type="email" name="w3lName" id="w3lName" placeholder=""
-                                        required="" th:field = "*{email}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="w3lSender">Phone</label>
-                                    <input class="form-control" type="number" name="w3lSender" id="w3lSender"
-                                        placeholder="" required="" th:field = "*{phoneNumber}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group-2 mt-4">
-                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Next</button>
-                        </div>
+
+                        <div th:object = "${orderid}">
+                        	<input th:name="orderid" type="hidden" th:id="orderidHidden" class="form-control" th:value="${orderid}">
+                       	</div>
+	                        <div class="row main-cont-sec">
+	                            <div class="col-md-8 mr-auto ml-auto">
+	                                <div class="form-group">
+	                                    <label for="w3lName">Name</label>
+	                                    <input class="form-control" type="text" name="w3lName" id="w3lName" placeholder=""
+	                                        required th:field = "*{name}">
+	                                </div>
+	                                <div class="form-group">
+	                                    <label for="w3lName">Email</label>
+	                                    <input class="form-control" type="email" name="w3lName" id="w3lName" placeholder=""
+	                                        required th:field = "*{email}">
+	                                </div>
+	                                <div class="form-group">
+	                                    <label for="w3lSender">Phone</label>
+	                                    <input class="form-control" type="number" name="w3lSender" id="w3lSender"
+	                                        placeholder="" required th:field = "*{phoneNumber}">
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="form-group-2 mt-4">
+	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Next</button>
+	                        </div>
+               
                     </form>
                 </div>
             </div>
