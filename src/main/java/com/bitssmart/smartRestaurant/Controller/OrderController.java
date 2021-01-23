@@ -138,9 +138,12 @@ public class OrderController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("bill");
 		List<ShowOrderVO> showOrderVOList=orderService.showOrderBill(orderid);
+		modelAndView.addObject(orderid);
 		modelAndView.addObject("showOrderBill",showOrderVOList);
 		modelAndView.addObject("overAllTotalPrice", showOrderVOList.get(0).getOverAllTotalPrice());
 		return modelAndView; 
 	}
+	
+	
 
 }
