@@ -1,0 +1,38 @@
+@startuml
+|#AntiqueWhite|Manager|
+start
+:Login;
+if (Activity?) is (Generate report) then
+:Generate report;
+stop
+else (Customer is here)
+:Table setup;
+|Customer|
+:Show menu;
+repeat
+ :Select Menu Item;
+repeat while (done selecting?) is (no )
+->yes;
+:Place Order;
+:Notify Chef with order details;
+
+repeat
+  :Notify Customer about order updates and timings;
+  :Delay for a few minutes|
+repeat while (Order Prepared?) is (no )
+->yes;
+:Notify Waiter to deliver food;
+repeat
+  :Delay for a few minutes|
+repeat while (Is customer done eating?) is (no )
+->yes;
+:Generate Bill;
+:Payment;
+:Ask for feedback;
+' endif
+
+stop
+@enduml
+
+' TODO
+' customer should be able to add more items to their order at any time before payment

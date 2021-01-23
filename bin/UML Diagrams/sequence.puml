@@ -1,0 +1,53 @@
+@startuml
+
+title **Smart Restaurant Sequence Diagram**
+	actor customer
+	database Restaurant_Management_System as RMS
+	actor Chef
+	actor Waiter
+	actor Manager
+
+	autonumber
+    == Table setup==
+	Manager -> RMS : Login()
+	Manager -> RMS : setTable()
+
+	== Customer Order Confirmation == 
+	loop  For new customer
+		customer -> RMS : requestMenu()
+		RMS -> customer : showMenu()
+		loop
+			customer -> RMS  : addtoCart()
+		end
+		' put above line in loop box
+		RMS -> customer : Request Customer details
+		customer -> RMS : Enter customer identification
+		customer -> RMS : confirm and Place Order
+		RMS -> customer : successMessage()
+
+		== Chef Updates Regularly ==
+		RMS -> Chef : show Order Details
+		Chef -> RMS : update the order details and timing
+		RMS -> customer : show the order updates and timing
+		RMS -> customer : notify to freshen up as food to be delivered shortly
+		RMS -> Waiter : notify to take order to table
+
+		== Billing and Feedback ==
+		customer -> RMS : requestBill()	
+		RMS -> customer : show Bill details and payment options
+		...some time later...
+
+		Waiter --> customer : helps clearing the bill
+		RMS -> customer : Bill cleared message
+		RMS -> customer : Ask for Feedback
+		customer -> RMS : Feedback
+		RMS -> customer : Thank you message
+	end
+	== Manager Report Generation ==
+	loop
+		Manager -> RMS : requestReport About sales
+		RMS -> Manager : Generate necessary reports
+	end
+
+@enduml
+
