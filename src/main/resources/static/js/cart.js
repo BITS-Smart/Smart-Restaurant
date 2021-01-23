@@ -97,8 +97,8 @@ let totalQuantityVar = 0;
             if (fieldName === 'id') {
                // col.classList.add('d-none'); //field with id - hidden
 			let p = document.createElement('p');
-			p.innerText = rowIndex;
-			            col.appendChild(p);
+			p.innerText = rowIndex+1;
+            col.appendChild(p);
 			let input = document.createElement('input');
             input.type = 'hidden';
             input.classList.add('form-control');
