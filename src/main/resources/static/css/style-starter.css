@@ -1872,7 +1872,7 @@ pre code {
 .table {
   width: 100%;
   margin-bottom: 1rem;
-  color: var(--heading-color);
+  color: #212529;
 }
 
 .table th,
@@ -16429,7 +16429,6 @@ h3.title-big {
   background: var(--bg-light);
   border-radius: 30px;
   height: auto;
-  color: var(--heading-color);
 }
 
 .w3l-contact-info-main .form-group textarea {
