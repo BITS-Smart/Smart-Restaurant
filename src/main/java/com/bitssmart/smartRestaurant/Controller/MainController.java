@@ -1,6 +1,7 @@
 package com.bitssmart.smartRestaurant.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.bitssmart.smartRestaurant.Service.UserService;
+import com.bitssmart.smartRestaurant.Model.DeliveryGuy;
 @Controller
 public class MainController {
 
@@ -49,6 +51,18 @@ public class MainController {
 	/*
 	 * @RequestMapping("/") public String home() { return "greeting"; }
 	 */
+	
+	@RequestMapping(value={"/registerdelivery"},method=RequestMethod.GET)    
+	public ModelAndView delRegister()  
+	{
+	   ModelAndView model = new ModelAndView();
+	   DeliveryGuy guy = new DeliveryGuy();
+	   model.addObject("guy", guy);
+	   model.setViewName("deliveryRegister");
+	   return model;
+	}
+	
+	
 	@RequestMapping(value={"/register"},method=RequestMethod.GET)    
 	public ModelAndView register()  
 	{
@@ -81,7 +95,6 @@ public class MainController {
 	
 	@RequestMapping(value= {"/register"}, method=RequestMethod.POST)
 	 public ModelAndView createUser(@Valid User user, BindingResult bindingResult) {
-		System.out.println(bindingResult);
 	  ModelAndView model = new ModelAndView();
 	  User userExists = userService.findUserByEmail(user.getEmail());
 	  
@@ -110,5 +123,6 @@ public class MainController {
 	  model.setViewName("index");
 	  return model;
 	 }
+	
 
 }
