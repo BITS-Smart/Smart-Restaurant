@@ -118,9 +118,10 @@ public class MainController {
 	 public ModelAndView home() {
 	  ModelAndView model = new ModelAndView();
 	  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	  System.out.println(auth.getName());
 	  User user = userService.findUserByEmail(auth.getName());
 	  model.addObject("userName", user.getName());
-	  model.setViewName("index");
+	  model.setViewName("viewOrders");
 	  return model;
 	 }
 	

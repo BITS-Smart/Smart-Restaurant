@@ -16429,6 +16429,7 @@ h3.title-big {
   background: var(--bg-light);
   border-radius: 30px;
   height: auto;
+  color: var(--heading-color);
 }
 
 .w3l-contact-info-main .form-group textarea {

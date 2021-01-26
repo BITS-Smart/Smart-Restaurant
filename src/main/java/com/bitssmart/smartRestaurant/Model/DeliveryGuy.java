@@ -61,6 +61,8 @@ public class DeliveryGuy {
 	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isEnabled;
 	
+	@Column(name = "isApproved", columnDefinition = "boolean default false", nullable = false)
+	private Boolean isApproved;
 
 	@Column(name = "points", nullable = false)
 	private double points;

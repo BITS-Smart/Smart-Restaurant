@@ -15,11 +15,13 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.bitssmart.smartRestaurant.Model.UserRoles;
+
 
 @Configuration
 //@EnableWebSecurity
-@Order(1)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+@Order(2)
+public class SecurityConfiguration2 extends WebSecurityConfigurerAdapter{
 
  @Autowired
  private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -27,13 +29,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
  @Autowired
  private DataSource dataSource;
  
- private final String USERS_QUERY = "select email, password,is_enabled from users where email=?";
+ private final String DELIVERY_GUY_QUERY = "select email, password,is_enabled from delivery_guy where email=?";
  @Override
  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
   auth.jdbcAuthentication()
-   .usersByUsernameQuery(USERS_QUERY)
-   .authoritiesByUsernameQuery(
-           "SELECT email, user_roles FROM users WHERE email=?")
+   .usersByUsernameQuery(DELIVERY_GUY_QUERY)
+   .authoritiesByUsernameQuery("SELECT email, role FROM  user_roles WHERE email=?")
    .dataSource(dataSource)
    .passwordEncoder(bCryptPasswordEncoder);
  }
@@ -41,12 +42,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
  @Override
  protected void configure(HttpSecurity http) throws Exception{
   http.csrf().disable().authorizeRequests()
-   .antMatchers("/","/register","/index","/registerdelivery","/registerGuy","/loginDeliveryGuy","/deliveryGuy/**").permitAll()
+   .antMatchers("/","/register","/orders","/registerdelivery","/registerGuy","/loginDeliveryGuy","/deliveryGuy/**").permitAll()
    .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/icon/**", "/fonts/**").permitAll().anyRequest()
    .authenticated().and()
-   .formLogin().loginPage("/login").loginProcessingUrl("/home/index")
-   .defaultSuccessUrl("/home/index",true)
-   .failureUrl("/login?error=true").permitAll()
+   .formLogin().loginPage("/loginDeliveryGuy").loginProcessingUrl("/deliveryGuy/orders")
+   .defaultSuccessUrl("/deliveryGuy/orders",true)
+   .failureUrl("/loginDeliveryGuy?error=true").permitAll()
    .usernameParameter("username")
    .passwordParameter("password")
    .and().logout()
@@ -54,11 +55,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
    .logoutSuccessUrl("/");
  }
  
- @Bean
- public PersistentTokenRepository persistentTokenRepository() {
-  JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-  db.setDataSource(dataSource);
-  
-  return db;
- }
+	/*
+	 * @Bean public PersistentTokenRepository persistentTokenRepository() {
+	 * JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+	 * db.setDataSource(dataSource);
+	 * 
+	 * return db; }
+	 */
 }
