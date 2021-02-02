@@ -48,11 +48,13 @@ public class Tables {
 	@Column(name = "tableNo", nullable = false)
 	private int tableNo;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private Restaurant restaurantId;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
@@ -71,6 +73,7 @@ public class Tables {
 	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
 	private Boolean isEnabled;
 	
+	@ToString.Exclude
 	@OneToMany(mappedBy = "tableId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn

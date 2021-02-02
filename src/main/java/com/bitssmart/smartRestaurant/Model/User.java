@@ -55,6 +55,7 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String password;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
@@ -76,19 +77,32 @@ public class User {
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
+	@ToString.Exclude
 	private List<Tables> tables;
 	
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
+	@ToString.Exclude
 	private List<FoodOrder> orders;
 	
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
+	@ToString.Exclude
 	private List<OrderItem> orderItems;
 	
 	@Column(name = "userRoles", nullable = false)
 	private UserRoles userRoles;
+	
+	@ToString.Exclude
+	@OneToOne(mappedBy = "userid", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Customer customer;
+	
+	@ToString.Exclude
+	@OneToOne(mappedBy = "userid", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private DeliveryGuy deliveryGuy;
 
 }

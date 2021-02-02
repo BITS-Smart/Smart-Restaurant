@@ -98,6 +98,7 @@ let totalQuantityVar = 0;
                // col.classList.add('d-none'); //field with id - hidden
 			let p = document.createElement('p');
 			p.innerText = rowIndex+1;
+			p.style.color = "black";
             col.appendChild(p);
 			let input = document.createElement('input');
             input.type = 'hidden';
@@ -109,17 +110,20 @@ let totalQuantityVar = 0;
             }
 			else if (fieldName === 'item') {
 				let p = document.createElement('p');
+				p.style.color = "black";
 			p.innerText = key;
 			            col.appendChild(p);
 				}
 			else if (fieldName === 'price') {
 				let p = document.createElement('p');
+				p.style.color = "black";
 				p.id = cartDict[key][1] + '.' + 'price';
 			p.innerText = parseFloat(cartDict[key][2]);
 			            col.appendChild(p);
 				}
 			else if (fieldName === 'quantity') {
 				let p = document.createElement('p');
+				p.style.color = "black";
 				p.id = cartDict[key][1] + '.' + 'quantity';
 			p.innerText = cartDict[key][0];
 			            col.appendChild(p);
