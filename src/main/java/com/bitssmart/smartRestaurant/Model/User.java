@@ -49,8 +49,8 @@ public class User {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "loginId", nullable = false)
-	private String loginId;
+	@Column(name = "email", nullable = false)
+	private String email;
 	
 	@Column(name = "password", nullable = false)
 	private String password;
