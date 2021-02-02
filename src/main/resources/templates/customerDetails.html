@@ -51,7 +51,8 @@ Author URL: http://w3layouts.com
             <div class="container py-md-4 py-3">
                 <div class="contact-w3pvt-form">
                     <div class="title-big mb-5"></div>
-                    <h5 class="title-big mb-5">Please provide your details to serve you better...</h5>
+                    <!-- <h5 class="title-big mb-5">Please provide your details to serve you better...</h5> -->
+                    <h5 class="title-big mb-5">Please confirm your details</h5>
                     <!-- <p>Please give us your details to serve you better</p> -->
 
                     <form method="post" class="w3layouts-contact-fm" action="#" th:action="@{/customerDetails}" th:object="${customer}">
@@ -64,22 +65,44 @@ Author URL: http://w3layouts.com
 	                                <div class="form-group">
 	                                    <label for="w3lName">Name</label>
 	                                    <input class="form-control" type="text" name="w3lName" id="w3lName" placeholder=""
-	                                        required th:field = "*{name}">
+	                                        required th:field = "${user.name}">
 	                                </div>
 	                                <div class="form-group">
-	                                    <label for="w3lName">Email</label>
-	                                    <input class="form-control" type="email" name="w3lName" id="w3lName" placeholder=""
-	                                        required th:field = "*{email}">
+	                                    <label for="w3lEmail">Email</label>
+	                                    <input class="form-control" type="email" name="w3lName" id="w3lEmail" placeholder=""
+	                                        required th:field = "${user.email}" readonly>
 	                                </div>
 	                                <div class="form-group">
 	                                    <label for="w3lSender">Phone</label>
 	                                    <input class="form-control" type="number" name="w3lSender" id="w3lSender"
-	                                        placeholder="" required th:field = "*{phoneNumber}">
+	                                        placeholder="" required th:field = "*{phoneNumber}" readonly>
 	                                </div>
-	                            </div>
+	                                
+	                               
+								<div class="form-group" th:object = "${orderType}">
+									
+										<label for="order_type">Choose Order Type</label> <select
+										id="selectId" th:onchange="|addFields(this.value)|">
+										<option value=""> Select Type </option>
+										<option
+											th:each="Otype : ${T(com.bitssmart.smartRestaurant.Model.OrderType).values()}"
+											th:value="${Otype}" th:text="${Otype}">
+										</option>
+									</select>
+									<input th:name="orderType" type="hidden" th:id="orderTypeHidden" class="form-control" >
+									</div>
+								
+								
+								 <div class="form-group" style="display: none;" id="addressDiv">
+	                                    <label for="w3lAddress">Address</label>
+	                                    <input class="form-control" type="text"  id="w3lAddress" placeholder=""
+	                                         th:field = "*{address}" >
+	                                </div>
+								
+							</div>
 	                        </div>
 	                        <div class="form-group-2 mt-4">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Next</button>
+	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Confirm</button>
 	                        </div>
                
                     </form>
@@ -95,6 +118,9 @@ Author URL: http://w3layouts.com
 
     <!-- Js scripts -->
     <!-- move top -->
+     <button onclick="topFunction()" id="movetop" title="Go to top">
+        <span class="fa fa-level-up" aria-hidden="true"></span>
+    </button>
     <script>
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function () {
@@ -242,6 +268,17 @@ Author URL: http://w3layouts.com
     <script src="/js/bootstrap.min.js"></script>
     <!-- //bootstrap-->
     <!-- //Js scripts -->
+    <script>
+    function addFields(val){
+    	if(val == "HOME_DELIVERY"){
+    		document.getElementById("addressDiv").style.display = "block";
+    	}else{
+    		document.getElementById("addressDiv").style.display = "none";
+    		document.getElementById("addressDiv").selectedIndex = "0";
+    	}
+    	document.getElementById("orderTypeHidden").value = val;
+    }
+    </script>
 </body>
 
 </html>

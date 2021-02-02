@@ -8,7 +8,6 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>BITS Smart Restaurant</title>
 <link rel="stylesheet" href="/css/style-starter.css">
-<link href="/css/style.css" rel='stylesheet' />
 </head>
 
 <body>
@@ -48,41 +47,37 @@
 					<div class="row align-items-center">
 						<div class="col-md-6 pt-md-0 pt-4"
 							style="flex: 0 0 100%; max-width: 100%;"></div>
-					</div><br>
+					</div><br><br><br><br>
 					<div class="mr-auto ml-auto">
 						<h3 class="mb-sm-4 mb-3 title mr-auto ml-auto"
-							style="margin: auto; width: 50%; padding: 10px; " th:text="'Welcome '+${userName}"></h3>
-					
+							style="margin: auto; width: 50%; padding: 10px; ">Your Order Status</h3>
+						<div class="row">
+								<div class="col-md-3"></div>
+								<div class="col-md-6">
+									<div class="alert alert-success" role="alert" th:if="${msg}"
+										th:utext="${msg}"></div>
+								</div>
+							</div>
+						<h3 class="mb-sm-4 mb-3 title mr-auto ml-auto" style="margin: auto; width: 50%; padding: 10px; "
+						th:if="${otp}" th:text="'Your OTP is : '+${otp}"></h3>
+					<div style="margin: auto; width: 50%; padding: 74px; ">
+						<p align="center"><button  type="button" style= "background-color: #008CBA;; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;" id="target" onclick="submitFn()" >Refresh</button></p>
 					</div>
-					<div th:unless="${#lists.isEmpty(orderList)}">
-					 <h4>Please select food orders</h4> <br><br>
-					 <!-- th:object="${orderIds}" -->
-					<form th:action="@{/selectOrders}"  method="post">
-						<h6>Orders:</h6><br>
-							<label  class="container" th:each="role,iter : ${orderList}" th:unless="${#lists.isEmpty(role)}">
-							<input type="checkbox" name="orderIds" th:id="${iter.index}"	th:value="${role.id}"  th:onclick="|showNxt(this.id)|" />
-							<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"> </p>
-							 <span class="checkmark"></span><br>
-							</label>
-							<br><br>
-						<div class="form-group-2 mt-4" style="display: none;" id="sbmtBtn">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Next</button>
-	                        </div>
-	                        <br><br>
-					</form>
 					</div>
-					
-					<div style="margin: auto; width: 50%; padding: 74px; " th:if="${#lists.isEmpty(orderList)}">
-						<h5 align="center">Sorry! No orders available.</h5>
-						<form th:action="@{/refreshOrders}"  method="post">
-						<div class="form-group-2 mt-4"  id="sbmtBtn2">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Refresh</button>
-	                        </div>
-						</form>
-					</div>
-					
-					
+					<!-- <p>Please give us your details to serve you better</p> -->
 
+					<form method="post" th:action="${'/trackOrder'}" style ="display: none;" th:object="${orderid}">
+  			 <input th:name="orderid" type="hidden" th:id="orderidHidden" class="form-control" th:value="${orderid}"> 
+    		<button type="submit" style ="display: none;" id="target11"></button>
+    				</form>
+					
 				</div>
 			</div>
 		</div>
@@ -252,16 +247,11 @@
 	<script src="/js/bootstrap.min.js"></script>
 	<!-- //bootstrap-->
 	<script>
-	function showNxt(id){
-		var checkBox = document.getElementById(id);
-		  var text = document.getElementById("sbmtBtn");
-		  if (checkBox.checked == true){
-		    text.style.display = "block";
-		  } else {
-		     text.style.display = "none";
-		  }
-	}
-	</script>
+  function submitFn() {
+	 // $( "#target" ).click();
+	  document.getElementById("target11").click();
+  }
+  </script>
 	<!-- //Js scripts -->
 </body>
 

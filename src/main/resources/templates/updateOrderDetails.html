@@ -8,7 +8,6 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>BITS Smart Restaurant</title>
 <link rel="stylesheet" href="/css/style-starter.css">
-<link href="/css/style.css" rel='stylesheet' />
 </head>
 
 <body>
@@ -48,41 +47,50 @@
 					<div class="row align-items-center">
 						<div class="col-md-6 pt-md-0 pt-4"
 							style="flex: 0 0 100%; max-width: 100%;"></div>
-					</div><br>
+					</div><br><br><br><br>
 					<div class="mr-auto ml-auto">
 						<h3 class="mb-sm-4 mb-3 title mr-auto ml-auto"
-							style="margin: auto; width: 50%; padding: 10px; " th:text="'Welcome '+${userName}"></h3>
+							style="margin: auto; width: 50%; padding: 10px; " th:text="'Welcome '+${userName}+'			Points: '+${points}"></h3>
 					
 					</div>
-					<div th:unless="${#lists.isEmpty(orderList)}">
-					 <h4>Please select food orders</h4> <br><br>
-					 <!-- th:object="${orderIds}" -->
-					<form th:action="@{/selectOrders}"  method="post">
-						<h6>Orders:</h6><br>
-							<label  class="container" th:each="role,iter : ${orderList}" th:unless="${#lists.isEmpty(role)}">
-							<input type="checkbox" name="orderIds" th:id="${iter.index}"	th:value="${role.id}"  th:onclick="|showNxt(this.id)|" />
-							<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"> </p>
-							 <span class="checkmark"></span><br>
-							</label>
-							<br><br>
-						<div class="form-group-2 mt-4" style="display: none;" id="sbmtBtn">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Next</button>
-	                        </div>
-	                        <br><br>
-					</form>
+					<div class="row">
+								<div class="col-md-3"></div>
+								<div class="col-md-6">
+									<div class="alert alert-success" role="alert" th:if="${msg}"
+										th:utext="${msg}"></div>
+								</div>
+					</div>
+					<!-- <p>Please give us your details to serve you better</p> -->
+					<div th:unless="${#lists.isEmpty(foodOrderList)}">
+					
+					<div  class="container" th:each="role,iter : ${foodOrderList}" th:unless="${#lists.isEmpty(role)}">
+					
+							<div th:unless="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
+								<form th:action="@{/orderDelivered}"  method="post" th:object="${foodOrderList}">
+									<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"></p>
+									<input type="text" name="otp" th:id="${iter.index}"	required  />
+									<input type="hidden" name="orderid" th:id="${iter.index}"	th:value="${role.id}"  />
+									<!-- <input type="hidden" th:name="foodOrderList" 	th:value="${foodOrderList}"  /> -->
+									<button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Delivered</button>
+								</form>
+							</div>
+							
+							<div th:if="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
+								<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}+'					Delivered!'"></p>
+							</div>
+					
 					</div>
 					
-					<div style="margin: auto; width: 50%; padding: 74px; " th:if="${#lists.isEmpty(orderList)}">
-						<h5 align="center">Sorry! No orders available.</h5>
+					</div>
+					<div style="margin: auto; width: 50%; padding: 74px; " th:if="${#lists.isEmpty(foodOrderList)}">
+						<h5 align="center">View more orders.</h5>
 						<form th:action="@{/refreshOrders}"  method="post">
 						<div class="form-group-2 mt-4"  id="sbmtBtn2">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Refresh</button>
+	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >View</button>
 	                        </div>
 						</form>
 					</div>
 					
-					
-
 				</div>
 			</div>
 		</div>
@@ -251,17 +259,6 @@
 	<!--bootstrap-->
 	<script src="/js/bootstrap.min.js"></script>
 	<!-- //bootstrap-->
-	<script>
-	function showNxt(id){
-		var checkBox = document.getElementById(id);
-		  var text = document.getElementById("sbmtBtn");
-		  if (checkBox.checked == true){
-		    text.style.display = "block";
-		  } else {
-		     text.style.display = "none";
-		  }
-	}
-	</script>
 	<!-- //Js scripts -->
 </body>
 

@@ -20,14 +20,14 @@ public class DeliveryGuyServiceImpl implements DeliveryGuyService {
 	 private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	 
-	 @Override
-	 public DeliveryGuy findUserByEmail(String email) {
-	  return guyRepository.findByEmail(email);
-	 }
+//	 @Override
+//	 public DeliveryGuy findUserByEmail(String email) {
+//	  return guyRepository.findByEmail(email);
+//	 }
 
 	 @Override
 	 public void saveUser(DeliveryGuy guy) {
-		 guy.setPassword(bCryptPasswordEncoder.encode(guy.getPassword()));
+		 //guy.setPassword(bCryptPasswordEncoder.encode(guy.getPassword()));
 		 guyRepository.save(guy);
 	 }
 }

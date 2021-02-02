@@ -48,16 +48,19 @@ public class OrderItem {
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private FoodOrder orderId;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private MenuItems menuItemId;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn

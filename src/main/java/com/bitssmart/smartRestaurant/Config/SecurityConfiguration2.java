@@ -18,48 +18,49 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.bitssmart.smartRestaurant.Model.UserRoles;
 
 
-@Configuration
+//@Configuration
 //@EnableWebSecurity
-@Order(2)
+//@Order
 public class SecurityConfiguration2 extends WebSecurityConfigurerAdapter{
-
- @Autowired
- private BCryptPasswordEncoder bCryptPasswordEncoder;
- 
- @Autowired
- private DataSource dataSource;
- 
- private final String DELIVERY_GUY_QUERY = "select email, password,is_enabled from delivery_guy where email=?";
- @Override
- protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-  auth.jdbcAuthentication()
-   .usersByUsernameQuery(DELIVERY_GUY_QUERY)
-   .authoritiesByUsernameQuery("SELECT email, role FROM  user_roles WHERE email=?")
-   .dataSource(dataSource)
-   .passwordEncoder(bCryptPasswordEncoder);
- }
- 
- @Override
- protected void configure(HttpSecurity http) throws Exception{
-  http.csrf().disable().authorizeRequests()
-   .antMatchers("/","/register","/orders","/registerdelivery","/registerGuy","/loginDeliveryGuy","/deliveryGuy/**").permitAll()
-   .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/icon/**", "/fonts/**").permitAll().anyRequest()
-   .authenticated().and()
-   .formLogin().loginPage("/loginDeliveryGuy").loginProcessingUrl("/deliveryGuy/orders")
-   .defaultSuccessUrl("/deliveryGuy/orders",true)
-   .failureUrl("/loginDeliveryGuy?error=true").permitAll()
-   .usernameParameter("username")
-   .passwordParameter("password")
-   .and().logout()
-   .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-   .logoutSuccessUrl("/");
- }
- 
-	/*
-	 * @Bean public PersistentTokenRepository persistentTokenRepository() {
-	 * JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-	 * db.setDataSource(dataSource);
-	 * 
-	 * return db; }
-	 */
+//
+// @Autowired
+// private BCryptPasswordEncoder bCryptPasswordEncoder;
+// 
+// @Autowired
+// private DataSource dataSource;
+// 
+// private final String DELIVERY_GUY_QUERY = "select email, password,is_enabled from delivery_guy where email=?";
+// @Override
+// protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//  auth.jdbcAuthentication()
+//   .usersByUsernameQuery(DELIVERY_GUY_QUERY)
+//   //.authoritiesByUsernameQuery("SELECT email, 4 FROM  user_roles WHERE email=?")
+//   .dataSource(dataSource)
+//   .passwordEncoder(bCryptPasswordEncoder);
+//  System.out.println("SecurityConfiguration2 :::::::::::::");
+// }
+// 
+// @Override
+// protected void configure(HttpSecurity http) throws Exception{
+//  http.csrf().disable().authorizeRequests()
+//   .antMatchers("/","/register","/orders","/registerdelivery","/registerGuy","/loginDeliveryGuy","/deliveryGuy/**").permitAll()
+//   .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/icon/**", "/fonts/**").permitAll().anyRequest()
+//   .authenticated().and()
+//   .formLogin().loginPage("/loginDeliveryGuy").loginProcessingUrl("/deliveryGuy/orders")
+//   .defaultSuccessUrl("/deliveryGuy/orders",true)
+//   .failureUrl("/loginDeliveryGuy?error=true").permitAll()
+//   .usernameParameter("username")
+//   .passwordParameter("password")
+//   .and().logout()
+//   .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//   .logoutSuccessUrl("/");
+// }
+// 
+//	/*
+//	 * @Bean public PersistentTokenRepository persistentTokenRepository() {
+//	 * JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+//	 * db.setDataSource(dataSource);
+//	 * 
+//	 * return db; }
+//	 */
 }

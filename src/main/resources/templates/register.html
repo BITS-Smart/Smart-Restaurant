@@ -1,86 +1,3 @@
-<!-- 
-<!DOCTYPE html>
-	<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
- 		xmlns:th="http://www.thymeleaf.org">
-<head>
-		<meta charset="utf-8">
-	
-		<link href="css/style.css" rel='stylesheet' type='text/css' />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-	
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text.css'/>
-		
-</head>
-<body>
-	<div class="main">
-		<div class="header" >
-			<h1>Login or Create a Free Account!</h1>
-		</div>
-		<p>Smart Restaurant App : Create New Staff account / Login using existing restaurant staff account. </p>
-			<form th:action="@{/register}" method="post" th:object="${user}">
-			 <div class="row">
-             <div class="col-md-3"></div>
-             <div class="col-md-6">
-              <div class="alert alert-success" role="alert" th:if="${msg}" th:utext="${msg}">
-     </div>
-             </div>
-         </div>
-				<ul class="left-form">
-					<h2>New Account:</h2>
-					<li>
-						<input id="name" th:field="*{name}" type="text"
-							placeholder="Name" required />
-						<div class="clear"> </div>
-					</li> 
-					<li>
-						<input
-							id="email" th:field="*{email}" type="email"
-							required placeholder="Email" />
-						<div class="clear"> </div>
-					</li> 
-					<li>
-						<input
-							id="password" type="password"
-							th:field="*{password}" required placeholder="Password" />
-						<div class="clear"> </div>
-					</li> 
-					<li>
-						 <label for="restaurant">Choose Restaurant:</label>
-
-						<select th:field="*{restaurantId}">
-						    <option th:value="NULL" th:text="${Restaurant}"></option>
-						     <option th:value="1" th:text="Restaurant_1"></option>
-						      <option th:value="2" th:text="Restaurant_2"></option>
-						   
-						</select>
-						<div class="clear"> </div>
-					</li> 
-					<li>
-						 <label for="user_roles">Choose type of user:</label>
-						<select th:field="*{userRoles}">
-						    <option th:each="role : ${T(com.bitssmart.smartRestaurant.Model.UserRoles).values()}"
-						            th:value="${role}"
-						            th:text="${role}">
-						    </option>
-						</select>
-						<div class="clear"> </div>
-					</li>
-					<input type="submit"  value="Create Account" style="color:#28a745;">
-						<div class="clear"> </div>
-						<p> Already a user ? Click here to <a href="/getLogin">Login</a>
-				</ul>
-				
-				</form>
-				
-				
-			
-		</div>	
-</body>
-</html> -->
-
-
-
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
@@ -142,7 +59,7 @@
 
                         
 	                        <div class="row main-cont-sec">
-	                            <div class="col-md-8 mr-auto ml-auto">
+	                            <div class="col-md-8 mr-auto ml-auto" id="mainDiv">
 	                                <div class="form-group">
 	                                    <label for="w3lName">Name</label>
 	                                    <input id="name" th:field="*{name}" type="text"	placeholder="" required />
@@ -155,23 +72,26 @@
 	                                    <label for="w3lSender">Password</label>
 	                                    <input id="password" type="password" th:field="*{password}" required placeholder="" />
 	                                </div>
+								
 								<div class="form-group">
-									<label for="restaurant">Choose Restaurant:</label> <select
-										th:field="*{restaurantId}">
-										<option th:value="NULL" th:text="${Restaurant}"></option>
-										<option th:value="1" th:text="Restaurant_1"></option>
-										<option th:value="2" th:text="Restaurant_2"></option>
-
+									<label for="user_roles">Choose type of user</label> <select
+										th:field="*{userRoles}" id="selectId" th:onchange="|addFields(this.value)|">
+										<option value=""> Select Role </option>
+										<option
+											th:each="role : ${T(com.bitssmart.smartRestaurant.Model.UserRoles).values()}"
+											th:value="${role}" th:text="${role}">
+											<!-- th:unless="${#strings.startsWith(role, 'CUSTOMER') or #strings.startsWith(role, 'DELIVERY_GUY') }"> -->
+										</option>
 									</select>
 								</div>
-								<div class="form-group">
-								<label for="user_roles">Choose type of user:</label>
-						<select th:field="*{userRoles}">
-						    <option th:each="role : ${T(com.bitssmart.smartRestaurant.Model.UserRoles).values()}"
-						            th:value="${role}"
-						            th:text="${role}">
-						    </option>
-						</select>
+								<div class="form-group" style="display: none;" th:id="restaurantDropdown" >
+									<label for="restaurant">Choose Restaurant</label> <select th:onchange="|addRestaurantId(this.value)|">
+										<!-- th:field="*{restaurantId.id}" > -->
+										<option value=""> Select Restaurant </option>
+										<option th:each="i : ${restaurantList}" th:value="${i.id}" th:text="${i.name}">
+   										</option>
+
+									</select>
 								</div>
 							</div>
 	                        </div>
@@ -179,7 +99,7 @@
 	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Create Account</button>
 	                        </div>
 	                        <br><br>
-	                        <p>	Already a delivery guy ? Click here to <a href="/getLogin">Login</a>
+	                        <p>	Already a registered ? Click here to <a href="/getLogin">Login</a>
                
                     </form>
                 </div>
@@ -219,7 +139,7 @@
     </script>
 
 	<script src="/js/jquery-3.3.1.min.js"></script>
-
+	<script src="/js/register.js"></script>
 	<script src="/js/theme-change.js"></script>
 	<script>
         function autoType(elementClass, typingSpeed) {

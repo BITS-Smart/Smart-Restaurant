@@ -12,6 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,12 +44,26 @@ public class Payment {
 	@Column(name = "amount", nullable = false)
 	private float amount;
 	
+	@Column(name = "paymentId")
+	private String paymentId;
+	
 	@Column(name = "paymentOptions", nullable = false)
 	private PaymentOptions paymentOptions;
 	
+	@ToString.Exclude
 	@OneToOne
 	@MapsId
     @JoinColumn(name = "order_id")
     private FoodOrder foodOrder;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP )
+	@Column(name = "created_at", columnDefinition = "timestamp default current_timestamp")
+	private Date creatededAt;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@UpdateTimestamp
+	@Column(name = "updated_at")
+	private Date updatedAt;
 	
 }

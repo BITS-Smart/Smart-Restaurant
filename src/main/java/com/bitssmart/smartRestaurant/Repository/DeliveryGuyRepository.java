@@ -11,5 +11,5 @@ import com.bitssmart.smartRestaurant.Model.DeliveryGuy;
 @Repository("deliveryGuyRepository")
 public interface DeliveryGuyRepository extends JpaRepository<DeliveryGuy, Long> {
 
-	DeliveryGuy findByEmail(String loginId);
+	//DeliveryGuy findByEmail(String loginId);
 }

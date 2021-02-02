@@ -16,8 +16,8 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
-@Configuration
 //@EnableWebSecurity
+@Configuration
 @Order(1)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
            "SELECT email, user_roles FROM users WHERE email=?")
    .dataSource(dataSource)
    .passwordEncoder(bCryptPasswordEncoder);
+  System.out.println("SecurityConfiguration1 :::::::::::::");
  }
  
  @Override

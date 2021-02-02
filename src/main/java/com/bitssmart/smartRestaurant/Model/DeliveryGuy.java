@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,14 +41,14 @@ public class DeliveryGuy {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name", nullable = false)
-	private String name;
-	
-	@Column(name = "email", nullable = false)
-	private String email;
-	
-	@Column(name = "password", nullable = false)
-	private String password;
+//	@Column(name = "name", nullable = false)
+//	private String name;
+//	
+//	@Column(name = "email", nullable = false)
+//	private String email;
+//	
+//	@Column(name = "password", nullable = false)
+//	private String password;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP )
@@ -58,12 +60,18 @@ public class DeliveryGuy {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 	
-	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
-	private Boolean isEnabled;
+//	@Column(name = "isEnabled", columnDefinition = "boolean default true", nullable = false)
+//	private Boolean isEnabled;
 	
 	@Column(name = "isApproved", columnDefinition = "boolean default false", nullable = false)
 	private Boolean isApproved;
 
 	@Column(name = "points", nullable = false)
 	private double points;
+	
+	@ToString.Exclude
+	@OneToOne
+	@MapsId
+    @JoinColumn(name = "user_id")
+    private User userid;
 }
