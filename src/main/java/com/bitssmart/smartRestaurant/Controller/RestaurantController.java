@@ -45,7 +45,7 @@ public class RestaurantController {
 	@RequestMapping(value ="/restaurant", method=RequestMethod.POST)    
 	public ModelAndView restaurantHome(@ModelAttribute("restaurantIndex") Long id )  
 	{
-		System.out.println(id);
+		System.out.println("I am here"+id);
 		Restaurant restaurant = restaurantService.getRestaurant(id);
 		ModelAndView modelAndView = new ModelAndView();   
 		modelAndView.addObject("restaurantId",id);
