@@ -1,14 +1,16 @@
 package com.bitssmart.smartRestaurant.Model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,46 +30,31 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "order_items")
+@Table(name = "payment")
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @ToString
-public class OrderItem {
+public class Payment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "note", nullable = false)
-	private String note;
+	@Column(name = "amount", nullable = false)
+	private float amount;
 	
-	@Column(name = "orderStatus", nullable = false)
-	private OrderStatus orderStatus;
+	@Column(name = "paymentId")
+	private String paymentId;
 	
-	@Column(name = "quantity", nullable = false)
-	private int quantity;
-	
-	@ToString.Exclude
-	@ManyToOne
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private FoodOrder orderId;
+	@Column(name = "paymentOptions", nullable = false)
+	private PaymentOptions paymentOptions;
 	
 	@ToString.Exclude
-	@ManyToOne
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private MenuItems menuItemId;
-	
-	@ToString.Exclude
-	@ManyToOne
-	@JsonIgnore
-	@PrimaryKeyJoinColumn
-	private User userId;
-	
-	@Column(name = "isCancelled", columnDefinition = "boolean default false", nullable = false)
-	private Boolean isCancelled;
+	@OneToOne
+	@MapsId
+    @JoinColumn(name = "order_id")
+    private FoodOrder foodOrder;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP )
@@ -78,4 +65,5 @@ public class OrderItem {
 	@UpdateTimestamp
 	@Column(name = "updated_at")
 	private Date updatedAt;
+	
 }

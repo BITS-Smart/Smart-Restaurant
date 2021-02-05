@@ -9,7 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,14 +44,14 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name", nullable = false)
-	private String name;
+//	@Column(name = "name", nullable = false)
+//	private String name;
 	
 	@Column(name = "phoneNumber", nullable = false)
 	private String phoneNumber;
 	
-	@Column(name = "email", nullable = false)
-	private String email;
+//	@Column(name = "email", nullable = false)
+//	private String email;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP )
@@ -63,33 +66,18 @@ public class Customer {
 	@Column(name = "isVIP", columnDefinition = "boolean default false", nullable = false)
 	private Boolean isVIP;
 	
+	@Column(name = "address")
+	private String address;
+	
 	@ToString.Exclude
 	@OneToMany(mappedBy = "customerID", cascade = CascadeType.ALL)
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private List<FoodOrder> orderId;
 
-//	public String getName() {
-//		return name;
-//	}
-//
-//	public void setName(String name) {
-//		this.name = name;
-//	}
-//
-//	public String getPhoneNumber() {
-//		return phoneNumber;
-//	}
-//
-//	public void setPhoneNumber(String phoneNumber) {
-//		this.phoneNumber = phoneNumber;
-//	}
-//
-//	public String getEmail() {
-//		return email;
-//	}
-//
-//	public void setEmail(String email) {
-//		this.email = email;
-//	}
+	@ToString.Exclude
+	@OneToOne
+	@MapsId
+    @JoinColumn(name = "user_id")
+    private User userid;
 }

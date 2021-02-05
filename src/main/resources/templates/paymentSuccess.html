@@ -1,0 +1,250 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>BITS Smart Restaurant</title>
+<link rel="stylesheet" href="/css/style-starter.css">
+</head>
+
+<body>
+	<!--header-->
+	<header id="site-header" class="fixed-top">
+		<div class="container">
+			<nav class="navbar navbar-expand-lg stroke px-0">
+				<h1>
+					<a class="navbar-brand" href="/home"> <i class="fa fa-cutlery"
+						aria-hidden="true"></i> Smart Restaurant
+					</a>
+				</h1>
+
+				<div class="ml-auto">
+					<nav class="navigation">
+						<div class="theme-switch-wrapper">
+							<label class="theme-switch" for="checkbox"> <input
+								type="checkbox" id="checkbox">
+								<div class="mode-container">
+									<i class="gg-sun"></i> <i class="gg-moon"></i>
+								</div>
+							</label>
+						</div>
+					</nav>
+				</div>
+				<!-- //toggle switch for light and dark theme -->
+			</nav>
+		</div>
+	</header>
+
+	<div></div>
+
+	<section class="w3l-contact-info-main" id="contact">
+		<div class="contact-sec py-5">
+			<div class="container py-md-4 py-3">
+				<div class="contact-w3pvt-form">
+					<div class="row align-items-center">
+						<div class="col-md-6 pt-md-0 pt-4"
+							style="flex: 0 0 100%; max-width: 100%;"></div>
+					</div><br><br><br><br>
+					<div class="mr-auto ml-auto">
+						<h3 class="mb-sm-4 mb-3 title mr-auto ml-auto"
+							style="margin: auto; width: 50%; padding: 10px; ">Payment Success!</h3>
+						
+					<div style="margin: auto; width: 50%; padding: 74px; ">
+						<p align="center"><button  type="button" style= "background-color: #008CBA;; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;" id="target" onclick="submitFn()" >Track Order</button></p>
+					</div>
+					</div>
+					<!-- <p>Please give us your details to serve you better</p> -->
+					<form method="post" th:action="${'/trackOrder'}" style ="display: none;" th:object="${orderid}">
+  			 <input th:name="orderid" type="hidden" th:id="orderidHidden" class="form-control" th:value="${orderid}"> 
+    		<button type="submit" style ="display: none;" id="target11"></button>
+    				</form>
+
+					
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+	<!-- //banner section -->
+	<!-- about section -->
+
+	<!-- //footer -->
+
+	<!-- Js scripts -->
+	<!-- move top -->
+	<button onclick="topFunction()" id="movetop" title="Go to top">
+		<span class="fa fa-level-up" aria-hidden="true"></span>
+	</button>
+	<script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+        
+        
+        function selectId(id){
+        	document.getElementById("restaurantIndexHidden").value = id;
+        	$( "#target" ).click();
+        }
+    </script>
+	<!-- //move top -->
+
+	<!-- common jquery plugin -->
+	<script src="/js/jquery-3.3.1.min.js"></script>
+	<!-- //common jquery plugin -->
+
+	<!-- theme switch js (light and dark)-->
+	<script src="/js/theme-change.js"></script>
+	<script>
+        function autoType(elementClass, typingSpeed) {
+            var thhis = $(elementClass);
+            thhis.css({
+                "position": "relative",
+                "display": "inline-block"
+            });
+            thhis.prepend('<div class="cursor" style="right: initial; left:0;"></div>');
+            thhis = thhis.find(".text-js");
+            var text = thhis.text().trim().split('');
+            var amntOfChars = text.length;
+            var newString = "";
+            thhis.text("|");
+            setTimeout(function () {
+                thhis.css("opacity", 1);
+                thhis.prev().removeAttr("style");
+                thhis.text("");
+                for (var i = 0; i < amntOfChars; i++) {
+                    (function (i, char) {
+                        setTimeout(function () {
+                            newString += char;
+                            thhis.text(newString);
+                        }, i * typingSpeed);
+                    })(i + 1, text[i]);
+                }
+            }, 1500);
+        }
+
+        $(document).ready(function () {
+            // Now to start autoTyping just call the autoType function with the 
+            // class of outer div
+            // The second paramter is the speed between each letter is typed.   
+            autoType(".type-js", 200);
+        });
+    </script>
+	<!-- //theme switch js (light and dark)-->
+
+	<!-- magnific popup -->
+	<script src="/js/jquery.magnific-popup.min.js"></script>
+	<script>
+        $(document).ready(function () {
+            $('.popup-with-zoom-anim').magnificPopup({
+                type: 'inline',
+
+                fixedContentPos: false,
+                fixedBgPos: true,
+
+                overflowY: 'auto',
+
+                closeBtnInside: true,
+                preloader: false,
+
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
+
+            $('.popup-with-move-anim').magnificPopup({
+                type: 'inline',
+
+                fixedContentPos: false,
+                fixedBgPos: true,
+
+                overflowY: 'auto',
+
+                closeBtnInside: true,
+                preloader: false,
+
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-slide-bottom'
+            });
+        });
+    </script>
+	<!-- //magnific popup -->
+
+	<!-- MENU-JS -->
+	<script>
+        $(window).on("scroll", function () {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 80) {
+                $("#site-header").addClass("nav-fixed");
+            } else {
+                $("#site-header").removeClass("nav-fixed");
+            }
+        });
+
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function () {
+            $("header").toggleClass("active");
+        });
+        $(document).on("ready", function () {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+            $(window).on("resize", function () {
+                if ($(window).width() > 991) {
+                    $("header").removeClass("active");
+                }
+            });
+        });
+    </script>
+	<!-- //MENU-JS -->
+
+	<!-- disable body scroll which navbar is in active -->
+	<script>
+        $(function () {
+            $('.navbar-toggler').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+    </script>
+	<!-- //disable body scroll which navbar is in active -->
+
+	<!--bootstrap-->
+	<script src="/js/bootstrap.min.js"></script>
+	<!-- //bootstrap-->
+	<script>
+  function submitFn() {
+	 // $( "#target" ).click();
+	  document.getElementById("target11").click();
+  }
+  </script>
+	<!-- //Js scripts -->
+</body>
+
+</html>

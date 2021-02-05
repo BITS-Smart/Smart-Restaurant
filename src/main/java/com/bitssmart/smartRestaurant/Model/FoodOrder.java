@@ -59,11 +59,13 @@ public class FoodOrder {
 	@Column(name = "isPaid", columnDefinition = "boolean default false", nullable = false)
 	private Boolean isPaid;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private Tables tableId;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
@@ -75,9 +77,23 @@ public class FoodOrder {
 	@ToString.Exclude
 	private List<OrderItem> orderItems;
 	
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	@PrimaryKeyJoinColumn
 	private Customer customerID;
 	
+	@ToString.Exclude
+	@OneToOne(mappedBy = "foodOrder", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Payment payment;
+	
+	@Column(name = "orderStatus", nullable = false)
+	private OrderStatus orderStatus;
+	
+	@Column(name = "orderType", nullable = false)
+	private OrderType orderType;
+	
+	@Column(name = "otp")
+	private String otp;
 }
