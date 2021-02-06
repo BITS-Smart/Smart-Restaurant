@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
  @Override
  protected void configure(HttpSecurity http) throws Exception{
   http.csrf().disable().authorizeRequests()
-   .antMatchers("/","/register","/index","/registerdelivery","/registerGuy","/loginDeliveryGuy","/deliveryGuy/**").permitAll()
+   .antMatchers("/","/register","/index","/registerdelivery","/registerGuy","/loginDeliveryGuy","/deliveryGuy/**","/pgresponse").permitAll()
    .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/icon/**", "/fonts/**").permitAll().anyRequest()
    .authenticated().and()
    .formLogin().loginPage("/login").loginProcessingUrl("/home/index")
