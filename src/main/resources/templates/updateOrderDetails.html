@@ -67,11 +67,35 @@
 					
 							<div th:unless="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
 								<form th:action="@{/orderDelivered}"  method="post" th:object="${foodOrderList}">
-									<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"></p>
-									<input type="text" name="otp" th:id="${iter.index}"	required  />
+								<!-- 	<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"></p> -->
+									<!-- <input type="text" name="otp" th:id="${iter.index}"	required  /> -->
 									<input type="hidden" name="orderid" th:id="${iter.index}"	th:value="${role.id}"  />
 									<!-- <input type="hidden" th:name="foodOrderList" 	th:value="${foodOrderList}"  /> -->
-									<button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Delivered</button>
+									<!-- <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Delivered</button> -->
+									<table class="table table-striped" style="margin-top: 100px;">
+										<thead>
+											<tr>
+												<th>Customer name</th>
+												<th>Address</th>
+												<th>OTP</th>
+												<th>Action</th>
+												
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr>
+												<td th:text="${role.customerID.userid.name}">Customer Name</td>
+												<td th:text="${role.customerID.address}">Id</td>
+												
+												<td><input type="text" name="otp" th:id="${iter.index}"	required  /></td>
+												
+												<td><button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Mark as Delivered</button></td>
+												
+											</tr>
+										</tbody>
+									</table>
+
 								</form>
 							</div>
 							

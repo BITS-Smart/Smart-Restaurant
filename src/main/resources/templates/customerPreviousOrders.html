@@ -1,7 +1,3 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
@@ -23,26 +19,6 @@ Author URL: http://w3layouts.com
                         <i class="fa fa-cutlery" aria-hidden="true"></i> Smart Restaurant
                     </a>
                 </h1>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                     <ul class="navbar-nav mx-lg-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/viewPreviousOrders">Your Orders</a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="/signout">Logout</a>
-                        </li>
-                        <!--<li class="nav-item active">
-                            <a class="nav-link" href="menu.html">Menu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact Us</a>
-                        </li>-->
-                    </ul> 
-                </div>
 
                 <div class="ml-auto">
                     <nav class="navigation">
@@ -72,25 +48,39 @@ Author URL: http://w3layouts.com
                 <div class="contact-w3pvt-form">
                     <div class="row align-items-center">
                 <div class="col-md-6 pt-md-0 pt-4" style="flex: 0 0 100%;  max-width: 100%;">
-                    <h3 class="mb-sm-4 mb-3 title" style="margin: auto; width: 50%; padding: 10px;">Please Select a Restaurant</h3>
+                    <h3 class="mb-sm-4 mb-3 title" style="margin: auto; width: 50%; padding: 10px;">Your Orders</h3>
                     </div>
                     </div>
                     
                     <!-- <p>Please give us your details to serve you better</p> -->
               
                 
-                 <form th:object="${restaurantIndex}" method="post" th:action="${'/restaurant'}">
+               
                 
-                <div class="row item" th:each="restaurant, status : ${restaurantList}" th:if="${not #lists.isEmpty(restaurant) and restaurant.isEnabled}">
-                <div class="col form-group" style="max-width: 50%">
-                       
-                            <input  type ="image" th:id="${restaurant.id}" th:attr="onclick=|selectId(this.id)|" th:src="@{'/images/'+${restaurant.name}+'.jpg'}" class="img-responsive"   th:onerror="'this.onerror=null; this.src=\'' + @{/images/DefaultRestaurantImg.jpg} + '\';'" >
-                        </div>
-                        <div  th:text="${restaurant.name}" style="width: auto; font-size: xx-large; margin: auto; align-content: center;"></div>
-                </div>
-                            <input th:name="restaurantIndex" type="hidden" th:id="restaurantIndexHidden" class="form-control">
-                            <button type="submit" style ="display: none;" id="target"></button>
-                </form>
+                <div class="row item"  th:if="${not #lists.isEmpty(orders)}">
+						<table class="table table-striped" style="margin-top: 100px;">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Total Price</th>
+									<th>Date</th>
+									<th>isPaid</th>
+									<th>Order Type</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="order, status : ${orders}">
+									<td th:text="${order.id}">Id</td>
+									<td th:text="${order.totalPrice}">Total Price</td>
+									<td th:text="${#dates.format(order.createdAt, 'dd-MMM-yyyy')}"></td>
+									<td th:text="${order.isPaid}">Is Paid</td>
+									<td th:text="${order.orderType}">Order Type</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+                
                 
                 </div>
             </div>
