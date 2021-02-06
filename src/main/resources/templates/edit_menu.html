@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Restaurant Menu</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/menu_management.js"></script>
+
+</head>
+<body>
+<form id="add_menu_item" name="add_menu_item" method="POST" action="/add_menu_item">
+    <p>Add a menu item</p>
+    <table>
+        <tr></tr>
+        <td>Description:</td>
+        <td><input id="description" name="description"></td>
+        </tr>
+        <tr>
+            <td>
+                food_category :
+            </td>
+            <td>
+                <select name="foodCategory" id="foodCategory" required>
+                    <option value="">--Please choose an option--</option>
+                    <option value="BREAKFAST">BREAKFAST</option>
+                    <option value="APPETIZER">APPETIZER</option>
+                    <option value="MAINCOURSE">MAINCOURSE</option>
+                    <option value="DESSERT">DESSERT</option>
+                    <option value="BEVERAGES">BEVERAGES</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                ingredients :
+            </td>
+            <td>
+                <input id="ingredients" name="ingredients">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                is_veg :
+            </td>
+            <td>
+                <input id="isVeg" name="isVeg" type="checkbox" />
+                <input name="_isVeg" type="hidden" value="on" /><!--prevents unticked checkbox being sent as null-->
+            </td>
+        </tr>
+        <tr>
+            <td>
+                name :
+            </td>
+            <td>
+                <input id="name" name="name" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                price :
+            </td>
+            <td>
+                <input id="price" name="price" required>
+            </td>
+        </tr>
+
+    </table>
+    <input type="submit" value="submit"/>
+
+
+</form>
+
+
+<table border=1 align="center" width="90%">
+    <thead>
+    <th>
+        Name
+    </th>
+    <th>
+        Price
+    </th>
+    <th>
+        Food Category
+    </th>
+    <th>
+        Is it Veg?
+    </th>
+    <th>
+        Edit Menu Item
+    </th>
+    <th>
+        Delete Menu Item
+    </th>
+    </thead>
+    <tbody id="menu_body">
+
+    </tbody>
+</table>
+
+
+</body>
+</html>
