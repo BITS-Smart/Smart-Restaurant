@@ -40,7 +40,7 @@ jobs:
         with:
           java-version: 11
 #          settings-path: ".m2/"
-      - run: 'echo "$SENTRY_DSN" > src/main/resources/application.properties'
+      - run: 'echo "$SENTRY_DSN" >> src/main/resources/application.properties'
         shell: bash
         env:
           SENTRY_DSN: ${{secrets.SENTRY_DSN}}
