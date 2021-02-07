@@ -163,7 +163,14 @@ public class MainController {
 		  model.addObject("orderList",orderList); 
 //		  model.addObject("orderIds",orderIds); 
 		  model.setViewName("viewOrders");
-	  }else {
+	  }
+	  else if(user.getUserRoles().equals(UserRoles.CHEF)) {
+			   
+			  model.setViewName("chefLanding");
+		  }
+	  
+	  
+	  else {
 		  
 		  model.setViewName("viewOrders");
 	  }
