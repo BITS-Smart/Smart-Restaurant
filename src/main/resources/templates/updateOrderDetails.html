@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
+<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>BITS Smart Restaurant</title>
 <link rel="stylesheet" href="/css/style-starter.css">
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 </head>
 
 <body>
-
+	<!--header-->
 	<header id="site-header" class="fixed-top">
 		<div class="container">
 			<nav class="navbar navbar-expand-lg stroke px-0">
@@ -33,7 +33,7 @@
 						</div>
 					</nav>
 				</div>
-
+				<!-- //toggle switch for light and dark theme -->
 			</nav>
 		</div>
 	</header>
@@ -41,47 +41,69 @@
 	<div></div>
 
 	<section class="w3l-contact-info-main" id="contact">
-        <div class="contact-sec py-5">
-            <div class="container py-md-4 py-3">
-                <div class="contact-w3pvt-form">
-                    <div class="title-big mb-5"></div>
-                    <h5 class="title-big mb-5">Login using existing account.</h5>
-                    <p>Login:</p> 
-
-                  <form th:action="@{/home/index}" method="post">
-				 <div class="alert alert-danger" role="alert" th:if="${param.error}">
-				  <div class="alert alert-danger">
-		            <span th:text="#{login.error}"></span>
-		        </div>
-				  </div>
-                        
-	                        <div class="row main-cont-sec">
-	                            <div class="col-md-8 mr-auto ml-auto">
-	                                <div class="form-group">
-	                                    <label for="w3lName">Email</label>
-	                                    <input id="username" name="username"  type="text"	placeholder="" required />
-	                                </div>
-	                               
-	                                <div class="form-group">
-	                                    <label for="w3lSender">Password</label>
-	                                    <input id="password" name="password" type="password" required placeholder="" />
-	                                </div>
-								
+		<div class="contact-sec py-5">
+			<div class="container py-md-4 py-3">
+				<div class="contact-w3pvt-form">
+					<div class="row align-items-center">
+						<div class="col-md-6 pt-md-0 pt-4"
+							style="flex: 0 0 100%; max-width: 100%;"></div>
+					</div><br><br><br><br>
+					<div class="mr-auto ml-auto">
+						<h3 class="mb-sm-4 mb-3 title mr-auto ml-auto"
+							style="margin: auto; width: 50%; padding: 10px; " th:text="'Welcome '+${userName}+'			Points: '+${points}"></h3>
+					
+					</div>
+					<div class="row">
+								<div class="col-md-3"></div>
+								<div class="col-md-6">
+									<div class="alert alert-success" role="alert" th:if="${msg}"
+										th:utext="${msg}"></div>
+								</div>
+					</div>
+					<!-- <p>Please give us your details to serve you better</p> -->
+					<div th:unless="${#lists.isEmpty(foodOrderList)}">
+					
+					<div  class="container" th:each="role,iter : ${foodOrderList}" th:unless="${#lists.isEmpty(role)}">
+					
+							<div th:unless="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
+								<form th:action="@{/orderDelivered}"  method="post" th:object="${foodOrderList}">
+									<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"></p>
+									<input type="text" name="otp" th:id="${iter.index}"	required  />
+									<input type="hidden" name="orderid" th:id="${iter.index}"	th:value="${role.id}"  />
+									<!-- <input type="hidden" th:name="foodOrderList" 	th:value="${foodOrderList}"  /> -->
+									<button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Delivered</button>
+								</form>
 							</div>
+							
+							<div th:if="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
+								<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}+'					Delivered!'"></p>
+							</div>
+					
+					</div>
+					
+					</div>
+					<div style="margin: auto; width: 50%; padding: 74px; " th:if="${#lists.isEmpty(foodOrderList)}">
+						<h5 align="center">View more orders.</h5>
+						<form th:action="@{/refreshOrders}"  method="post">
+						<div class="form-group-2 mt-4"  id="sbmtBtn2">
+	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >View</button>
 	                        </div>
-	                        <div class="form-group-2 mt-4">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Login</button>
-	                        </div>
-	                        <br><br>
-	                        <p>	Forgot Password?<a href="#">click here!</a><p>
-               
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-	
+						</form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
 
+	</section>
+
+	<!-- //banner section -->
+	<!-- about section -->
+
+	<!-- //footer -->
+
+	<!-- Js scripts -->
+	<!-- move top -->
 	<button onclick="topFunction()" id="movetop" title="Go to top">
 		<span class="fa fa-level-up" aria-hidden="true"></span>
 	</button>
@@ -111,9 +133,13 @@
         	$( "#target" ).click();
         }
     </script>
+	<!-- //move top -->
 
+	<!-- common jquery plugin -->
 	<script src="/js/jquery-3.3.1.min.js"></script>
+	<!-- //common jquery plugin -->
 
+	<!-- theme switch js (light and dark)-->
 	<script src="/js/theme-change.js"></script>
 	<script>
         function autoType(elementClass, typingSpeed) {
@@ -150,8 +176,9 @@
             autoType(".type-js", 200);
         });
     </script>
+	<!-- //theme switch js (light and dark)-->
 
-
+	<!-- magnific popup -->
 	<script src="/js/jquery.magnific-popup.min.js"></script>
 	<script>
         $(document).ready(function () {
@@ -188,7 +215,9 @@
             });
         });
     </script>
+	<!-- //magnific popup -->
 
+	<!-- MENU-JS -->
 	<script>
         $(window).on("scroll", function () {
             var scroll = $(window).scrollTop();
@@ -215,7 +244,9 @@
             });
         });
     </script>
+	<!-- //MENU-JS -->
 
+	<!-- disable body scroll which navbar is in active -->
 	<script>
         $(function () {
             $('.navbar-toggler').click(function () {
@@ -223,9 +254,12 @@
             })
         });
     </script>
+	<!-- //disable body scroll which navbar is in active -->
 
+	<!--bootstrap-->
 	<script src="/js/bootstrap.min.js"></script>
-
+	<!-- //bootstrap-->
+	<!-- //Js scripts -->
 </body>
 
 </html>

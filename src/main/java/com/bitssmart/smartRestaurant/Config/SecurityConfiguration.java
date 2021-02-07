@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,8 +16,9 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
+//@EnableWebSecurity
 @Configuration
-@EnableWebSecurity
+@Order(1)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
  @Autowired
@@ -34,16 +36,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
            "SELECT email, user_roles FROM users WHERE email=?")
    .dataSource(dataSource)
    .passwordEncoder(bCryptPasswordEncoder);
+  System.out.println("SecurityConfiguration1 :::::::::::::");
  }
  
  @Override
  protected void configure(HttpSecurity http) throws Exception{
   http.csrf().disable().authorizeRequests()
-   .antMatchers("/","/register","/index").permitAll()
-   .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/icon/**").permitAll().anyRequest()
+   .antMatchers("/","/register","/index","/registerdelivery","/registerGuy","/loginDeliveryGuy","/deliveryGuy/**").permitAll()
+   .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/icon/**", "/fonts/**").permitAll().anyRequest()
    .authenticated().and()
    .formLogin().loginPage("/login").loginProcessingUrl("/home/index")
-   .defaultSuccessUrl("/index",true)
+   .defaultSuccessUrl("/home/index",true)
    .failureUrl("/login?error=true").permitAll()
    .usernameParameter("username")
    .passwordParameter("password")
