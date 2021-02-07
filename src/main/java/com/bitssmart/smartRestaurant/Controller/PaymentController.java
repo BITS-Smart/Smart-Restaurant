@@ -1,10 +1,12 @@
 package com.bitssmart.smartRestaurant.Controller;
 
-import java.util.List;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
+
+
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,8 +24,8 @@ import com.bitssmart.smartRestaurant.Model.FoodOrder;
 import com.bitssmart.smartRestaurant.Model.OrderStatus;
 import com.bitssmart.smartRestaurant.Model.OrderType;
 import com.bitssmart.smartRestaurant.Model.Payment;
-import com.bitssmart.smartRestaurant.Model.PaymentOptions;
-import com.bitssmart.smartRestaurant.ResponseVO.ShowOrderVO;
+
+import com.bitssmart.smartRestaurant.Service.EmailConfigService;
 import com.bitssmart.smartRestaurant.Service.OrderService;
 import com.bitssmart.smartRestaurant.Service.PaymentService;
 import com.paytm.pg.merchant.PaytmChecksum;
@@ -40,6 +42,9 @@ public class PaymentController {
 	private PaytmDetailPojo paytmDetailPojo;
 	@Autowired
 	private Environment env;
+	@Autowired
+	private EmailConfigService emailConfigService;
+	
 	
 	@RequestMapping(value="/success", method=RequestMethod.POST)    
 	public ModelAndView paymentSuccess(@ModelAttribute("orderid") long orderid )
@@ -121,13 +126,13 @@ public class PaymentController {
 
 	        boolean isValideChecksum = false;
 	        System.out.println("RESULT : "+parameters.toString());
+	        FoodOrder foodOrder =orderService.getFoodOrder(Long.parseLong(parameters.get("ORDERID")));
 	        try {
 	            isValideChecksum = validateCheckSum(parameters, paytmChecksum);
 	            if (isValideChecksum && parameters.containsKey("RESPCODE")) {
 	                if (parameters.get("RESPCODE").equals("01")) {
 	                    result = "Payment Successful";
-	                    FoodOrder foodOrder =orderService.getFoodOrder(Long.parseLong(parameters.get("ORDERID")));
-	            		foodOrder.setPayment(new Payment());
+	                    foodOrder.setPayment(new Payment());
 	            		foodOrder.getPayment().setFoodOrder(foodOrder);
 	            		//Payment payment = new Payment();
 	            		foodOrder.getPayment().setFoodOrder(foodOrder);
@@ -150,10 +155,16 @@ public class PaymentController {
 	            			foodOrder.setOtp(String.format("%04d", random.nextInt(10000)));
 	            		}
 	            		paymentService.savePaymentDetails(foodOrder.getPayment());
+	            		String subject="Payment Success";
+	            		String message="Thanks For Ordering & You have successfully paid :<strong>"+parameters.get("TXNAMOUNT")+"</strong><br><br><br>Thank You <br>BitsSmartRestaurant";
+	            		emailConfigService.mailSender(foodOrder.getCustomerID().getUserid().getEmail(),message,subject);
 	            		model.addAttribute("orderid",parameters.get("ORDERID"));
 	            		return "paymentSuccess";
 	                } else {
 	                    result = "Payment Failed";
+	                    String subject="Payment Failed";
+	            		String message="Thanks For Ordering & Your transaction for:<strong>"+parameters.get("TXNAMOUNT")+"</strong>"+" has failed"+"<br><br><br>Thank You <br>BitsSmartRestaurant";
+	            		emailConfigService.mailSender(foodOrder.getCustomerID().getUserid().getEmail(),message,subject);
 	                    model.addAttribute("msg","Payment Failed.Please try again.");
 	                    return "redirect:/showOrderBill?orderid="+parameters.get("ORDERID");
 	                }
@@ -179,8 +190,7 @@ public class PaymentController {
 		return PaytmChecksum.generateSignature(parameters, paytmDetailPojo.getMerchantKey());
 	}
 	
+}
 	
-	
-}	
 
 
