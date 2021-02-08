@@ -13,7 +13,7 @@ import com.bitssmart.smartRestaurant.Bean.OrderItemBean;
 import com.bitssmart.smartRestaurant.Service.OrderItemService;
 
 @Controller
-public class ManagerViewController {
+public class ReportController {
 	
 	@Autowired
 	private OrderItemService orderItemService;
