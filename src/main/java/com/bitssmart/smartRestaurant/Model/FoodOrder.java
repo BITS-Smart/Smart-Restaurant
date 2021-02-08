@@ -46,7 +46,7 @@ public class FoodOrder {
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP )
 	@Column(name = "created_at", columnDefinition = "timestamp default current_timestamp")
-	private Date creatededAt;
+	private Date createdAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@UpdateTimestamp
