@@ -36,6 +36,7 @@ public class OrderService {
 		FoodOrder foodOrder = orderRepository.findById(foodOrderId).orElse(null);
 			for(OrderItem item:foodOrder.getOrderItems()) {
 			ShowOrderVO showOrderVO=new ShowOrderVO();
+			showOrderVO.setCustId(foodOrder.getCustomerID().getId());
 			showOrderVO.setId(id);
 			showOrderVO.setMenuItemName(item.getMenuItemId().getName());
 			showOrderVO.setPrice(item.getMenuItemId().getPrice());

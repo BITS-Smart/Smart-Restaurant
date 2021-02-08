@@ -27,6 +27,7 @@ import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.bitssmart.smartRestaurant.Service.EmailConfigService;
 import com.bitssmart.smartRestaurant.Service.OrderService;
 import com.bitssmart.smartRestaurant.Service.RestaurantService;
 import com.bitssmart.smartRestaurant.Service.UserService;
@@ -115,6 +116,8 @@ public class MainController {
 	
 	@Autowired
 	 private UserService userService;
+	@Autowired
+	private EmailConfigService emailConfigService;
 	
 	@RequestMapping(value= {"/register"}, method=RequestMethod.POST)
 	 public ModelAndView createUser(@Valid User user, BindingResult bindingResult) {
@@ -141,6 +144,9 @@ public class MainController {
 			  user.getDeliveryGuy().setIsApproved(false);
 		  }
 		  userService.saveUser(user);
+		  String messageToSent="Dear,"+user.getName()+"<br><br>Congratulation!<br>You have successfully registered as "+user.getUserRoles()+" in Smart Restaurant<br><br><br>Thank You <br>BitsSmartRestaurant";
+		  String subject="Successfully Registered in Smart Restaurant";
+		  emailConfigService.mailSender(user.getEmail(),messageToSent, subject);
 		  model.addObject("msg", "User has been registered successfully!");
 		  model.addObject("user", new User());
 		  model.setViewName("register");
@@ -185,7 +191,14 @@ public class MainController {
 		  model.addObject("orderList",orderList); 
 //		  model.addObject("orderIds",orderIds); 
 		  model.setViewName("viewOrders");
-	  }else {
+	  }
+	  else if(user.getUserRoles().equals(UserRoles.CHEF)) {
+			   
+			  model.setViewName("chefLanding");
+		  }
+	  
+	  
+	  else {
 		  
 		  model.setViewName("viewOrders");
 	  }

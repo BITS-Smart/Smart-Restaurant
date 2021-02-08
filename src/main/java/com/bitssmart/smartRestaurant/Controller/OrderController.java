@@ -163,6 +163,8 @@ public class OrderController {
 		modelAndView.addObject("orderid",orderid);
 		modelAndView.addObject("showOrderBill",showOrderVOList);
 		modelAndView.addObject("overAllTotalPrice", showOrderVOList.get(0).getOverAllTotalPrice());
+		modelAndView.addObject("custId", showOrderVOList.get(0).getCustId());
+		modelAndView.addObject("orderId", orderid);
 		return modelAndView; 
 	}
 	
