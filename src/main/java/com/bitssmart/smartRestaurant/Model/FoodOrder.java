@@ -1,6 +1,7 @@
 package com.bitssmart.smartRestaurant.Model;
 
 import java.util.Date;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
