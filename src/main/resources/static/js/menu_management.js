@@ -15,10 +15,15 @@ $(document).ready(function () {
                 var ingredients = menu_items_obj[i].ingredients;
                 var price = menu_items_obj[i].price;
                 var foodCategory = menu_items_obj[i].foodCategory;
-                var isVeg = menu_items_obj[i].isVeg;
+                if(menu_items_obj[i].isVeg){
+                    var isVeg = "Yes"
+                }
+                else{
+                    var isVeg = "No"
+                }
                 var isEnabled = menu_items_obj[i].isEnabled;
 
-                menu_items_table_data += "<tr id='entry" + menu_item_id + "'><td>" + name + "</td><td>" + price + "</td><td>" + foodCategory + "</td><td>" + isVeg + "</td><td><a href='/edit_menu_item/?menu_item_id=" + menu_item_id + "'>Edit</a></td>" + "<td><a href='#' onclick=deleteThis(" + menu_item_id + ")>Delete</a></td></tr>"
+                menu_items_table_data += "<tr id='entry" + menu_item_id + "'><td>" + name + "</td><td>" + price + "</td><td>" + foodCategory + "</td><td>" + isVeg + "</td><td><a href='/edit_menu_item/" + menu_item_id + "'>Edit</a></td>" + "<td><a href='#' onclick=deleteThis(" + menu_item_id + ")>Delete</a></td></tr>"
 
             }
             elementoftables = document.getElementById("menu_body")

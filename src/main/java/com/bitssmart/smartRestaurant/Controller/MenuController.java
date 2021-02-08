@@ -12,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
+@Controller
 public class MenuController {
 
     @Autowired
@@ -36,26 +39,26 @@ public class MenuController {
     private MenuItemRepository menuItemRepository;
 
     @RequestMapping(value={"/menuedit"}, method = RequestMethod.GET)
-    public ModelAndView edit_menu() {
+    public ModelAndView manage_menu() {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getName());
+//        System.out.println(auth.getName());
         modelAndView.setViewName("edit_menu");
         return modelAndView;
     }
 
-    @GetMapping("/menu_display")
-    public List<MenuItems> retrieveCompleteRestaurantMenu() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getName());
-        User user = userService.findUserByEmail(auth.getName());
-        Restaurant restaurant = restaurantService.getRestaurant(user.getRestaurantId().getId());
-//        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
-        List<MenuItems> menuItems = restaurant.getMenuitems().stream().filter(MenuItems::getIsEnabled).collect(Collectors.toList());
-
-        return menuItems;
-
-    }
+//    @GetMapping("/menu_display")
+//    public List<MenuItems> retrieveCompleteRestaurantMenu() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        System.out.println(auth.getName());
+//        User user = userService.findUserByEmail(auth.getName());
+//        Restaurant restaurant = restaurantService.getRestaurant(user.getRestaurantId().getId());
+////        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
+//        List<MenuItems> menuItems = restaurant.getMenuitems().stream().filter(MenuItems::getIsEnabled).collect(Collectors.toList());
+//
+//        return menuItems;
+//
+//    }
 
     @PostMapping("/add_menu_item")
     public ModelAndView add_menu_item(MenuItems menuItems) {
@@ -69,19 +72,42 @@ public class MenuController {
         return new ModelAndView("redirect:/menuedit");
     }
 
-    @PostMapping("/delete_menu_item")
-    public HashMap<String, String> remove_menu_item(Long menu_item_id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        System.out.println(auth.getName());
-        User user = userService.findUserByEmail(auth.getName());
-        MenuItems menuItem = menuService.getMenuItem(menu_item_id);
-        menuItem.setIsEnabled(false);
-        menuItem = menuService.saveMenuItem(menuItem);
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("msg", "Y");
-        map.put("id", String.valueOf(menu_item_id));
-        return map;
+//    @GetMapping("/edit_menu_item")
+//    public ModelAndView edit_menu() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("menu_item_edit");
+//        return modelAndView;
+//
+//    }
+
+    @GetMapping("/edit_menu_item/{id}")
+    public String showMenuUpdateForm(@PathVariable("id") long id, Model model) {
+        MenuItems menuItem = menuItemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid menu item Id:" + id));
+
+        model.addAttribute("menuItem", menuItem);
+        return "updateMenuItem";
+    }
+
+    @PostMapping("/updateMenuItem/{id}")
+    public String updateMenuItem(@PathVariable("id") long id, @Valid MenuItems menuItem,
+                                 BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            menuItem.setId(id);
+            return "updateMenuItem";
+        }
+        MenuItems existing_menuItem = menuItemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid menu item Id:" + id));
+        existing_menuItem.setDescription(menuItem.getDescription());
+        existing_menuItem.setFoodCategory(menuItem.getFoodCategory());
+        existing_menuItem.setIngredients(menuItem.getIngredients());
+        existing_menuItem.setIsVeg(menuItem.getIsVeg());
+        existing_menuItem.setName(menuItem.getName());
+        existing_menuItem.setPrice(menuItem.getPrice());
+
+        menuItemRepository.save(existing_menuItem);
+        return "redirect:/menuedit";
     }
 
 }
