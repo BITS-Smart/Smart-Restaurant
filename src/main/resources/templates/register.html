@@ -70,7 +70,7 @@
 	                                </div>
 	                                <div class="form-group">
 	                                    <label for="w3lSender">Password</label>
-	                                    <input id="password" type="password" th:field="*{password}" required placeholder="" />
+	                                    <input id="password" type="password" th:field="*{password}" required placeholder=""/>
 	                                </div>
 								
 								<div class="form-group">
@@ -96,7 +96,7 @@
 							</div>
 	                        </div>
 	                        <div class="form-group-2 mt-4">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Create Account</button>
+	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" onclick="return validatePassword()">Create Account</button>
 	                        </div>
 	                        <br><br>
 	                        <p>	Already a registered ? Click here to <a href="/getLogin">Login</a>
@@ -249,6 +249,44 @@
             })
         });
     </script>
+    <script type="text/javascript">
+    function validatePassword() {
+	    var p = document.getElementById('password').value,
+	        errors = [];
+	    if (p.length < 8) {
+	        errors.push("Your password must be at least 8 characters"); 
+	    }
+	    if (p.search(/[a-z]/i) < 0) {
+	        errors.push("Your password must contain at least one letter.");
+	    }
+	    if (p.search(/[0-9]/) < 0) {
+	        errors.push("Your password must contain at least one digit."); 
+	    }
+	    if (errors.length > 0) {
+	        alert(errors.join("\n"));
+	        return false;
+	    }
+	    if(!validatePhoneNumber()){
+	    alert("Your phone number must be at least 10 characters");
+	    return false;
+	    }
+	    console.log(errors);
+	    return true;
+	}
+	
+	function validatePhoneNumber() {
+	if(document.getElementById('phnNumberDiv') != null)
+	{
+    var p = document.getElementById('phoneNumber').value,
+        errors = [];
+    if (p.length < 10) {
+        errors.push("Your phone number must be at least 10 characters"); 
+        return false;
+    }
+    }
+    return true;
+	}
+</script>
 
 	<script src="/js/bootstrap.min.js"></script>
 
