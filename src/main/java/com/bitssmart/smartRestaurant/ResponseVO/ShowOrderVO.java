@@ -11,6 +11,8 @@ public class ShowOrderVO {
 	
 	private String menuItemName;
 	
+	private Long custId;
+	
 	private int quantity;
 	
 	private float price;

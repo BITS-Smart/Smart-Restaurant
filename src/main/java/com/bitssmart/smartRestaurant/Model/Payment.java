@@ -47,9 +47,40 @@ public class Payment {
 	@Column(name = "paymentId")
 	private String paymentId;
 	
-	@Column(name = "paymentOptions", nullable = false)
-	private PaymentOptions paymentOptions;
+
+	@Column(name = "paymentMode")
+	private String paymentMode;
 	
+	@Column(name = "bankName")
+	private String bankName;
+	
+	@Column(name = "bankTXNID")
+	private String bankTXNID;
+	
+	@Column(name = "currency")
+	private String currency;
+	
+	@Column(name = "gatewayName")
+	private String gatewayName;
+	
+	@Column(name = "respCode")
+	private String respCode;
+	
+	@Column(name = "repMsg")
+	private String repMsg;
+	
+	@Column(name = "status")
+	private String status;
+	
+	@Column(name = "txnAmount")
+	private String txnAmount;
+	
+	@Column(name = "txnDate")
+	private String txnDate;
+	
+
+	
+  
 	@ToString.Exclude
 	@OneToOne
 	@MapsId
