@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>BITS Smart Restaurant</title>
 <link rel="stylesheet" href="/css/style-starter.css">
-<link href="/css/style.css" rel='stylesheet' />
+ <link href="/css/style.css" rel='stylesheet' /> 
 </head>
 
 <body>
@@ -21,7 +21,19 @@
 						aria-hidden="true"></i> Smart Restaurant
 					</a>
 				</h1>
-
+				  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                     <ul class="navbar-nav mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/viewDeliveredOrders">Your Orders</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signout">Logout</a>
+                        </li>
+                    </ul> 
+                </div>
+                <h5 class="mb-sm-4 mb-3 title mr-auto ml-auto" style="margin: revert;width: 17%;padding: -14px;" th:text="'Welcome '+${userName}"></h5>
+				
 				<div class="ml-auto">
 					<nav class="navigation">
 						<div class="theme-switch-wrapper">
@@ -49,21 +61,42 @@
 						<div class="col-md-6 pt-md-0 pt-4"
 							style="flex: 0 0 100%; max-width: 100%;"></div>
 					</div><br>
-					<div class="mr-auto ml-auto">
+					<!-- <div class="mr-auto ml-auto">
 						<h3 class="mb-sm-4 mb-3 title mr-auto ml-auto"
 							style="margin: auto; width: 50%; padding: 10px; " th:text="'Welcome '+${userName}"></h3>
 					
-					</div>
+					</div> -->
 					<div th:unless="${#lists.isEmpty(orderList)}">
-					 <h4>Please select food orders</h4> <br><br>
+					 <br><h5>Please select food orders</h5> 
 					 <!-- th:object="${orderIds}" -->
 					<form th:action="@{/selectOrders}"  method="post">
-						<h6>Orders:</h6><br>
-							<label  class="container" th:each="role,iter : ${orderList}" th:unless="${#lists.isEmpty(role)}">
-							<input type="checkbox" name="orderIds" th:id="${iter.index}"	th:value="${role.id}"  th:onclick="|showNxt(this.id)|" />
+						
+						<table class="table table-striped" style="margin-top: 100px;">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>Customer name</th>
+												<th>Address</th>
+												<th>Select</th>
+												
+											</tr>
+										</thead>
+										<tbody>
+							<!-- <label  class="container" th:each="role,iter : ${orderList}" th:unless="${#lists.isEmpty(role)}">
+							<input type="checkbox" name="orderIds" th:id="${iter.index}"	th:value="${role.id}"  th:onclick="|showNxt(this.name)|" />
 							<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"> </p>
 							 <span class="checkmark"></span><br>
-							</label>
+							</label> -->
+									<tr th:each="role,iter : ${orderList}" th:unless="${#lists.isEmpty(role)}">
+												<td th:text="${role.id}">Id</td>
+												<td th:text="${role.customerID.userid.name}">Customer Name</td>
+												<td th:text="${role.customerID.address}">Address</td>
+												<td><label class="container"><input  type="checkbox" name="orderIds" th:id="${iter.index}"	th:value="${role.id}"  th:onclick="|showNxt(this.name)|" />
+												<span class="checkmark"></span></label></td>
+												
+											</tr>
+										</tbody>
+									</table>
 							<br><br>
 						<div class="form-group-2 mt-4" style="display: none;" id="sbmtBtn">
 	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Next</button>
@@ -253,10 +286,24 @@
 	<!-- //bootstrap-->
 	<script>
 	function showNxt(id){
-		var checkBox = document.getElementById(id);
 		  var text = document.getElementById("sbmtBtn");
+		/* var checkBox = document.getElementById(id);
 		  if (checkBox.checked == true){
 		    text.style.display = "block";
+		  } else {
+		     text.style.display = "none";
+		  } */
+		  
+		  var x = document.getElementsByName(id);
+		  var count =0;
+		  var i;
+		  for (i = 0; i < x.length; i++) {
+		    if (x[i].type == "checkbox" &&  x[i].checked == true) {
+		    	count++;
+		    }
+		  }
+		  if(count >0){
+			  text.style.display = "block";
 		  } else {
 		     text.style.display = "none";
 		  }

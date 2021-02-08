@@ -1,9 +1,5 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -19,20 +15,18 @@ Author URL: http://w3layouts.com
         <div class="container">
             <nav class="navbar navbar-expand-lg stroke px-0">
                 <h1>
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="/home">
                         <i class="fa fa-cutlery" aria-hidden="true"></i> Smart Restaurant
                     </a>
                 </h1>
-
-				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                      <ul class="navbar-nav mx-lg-auto">
-                      
                         <li class="nav-item">
                             <a class="nav-link" href="/signout">Logout</a>
                         </li>
                     </ul> 
                 </div>
-                
+
                 <div class="ml-auto">
                     <nav class="navigation">
                         <div class="theme-switch-wrapper">
@@ -59,62 +53,46 @@ Author URL: http://w3layouts.com
         <div class="contact-sec py-5">
             <div class="container py-md-4 py-3">
                 <div class="contact-w3pvt-form">
-                    <div class="title-big mb-5"></div>
-                    <!-- <h5 class="title-big mb-5">Please provide your details to serve you better...</h5> -->
-                    <h5 class="title-big mb-5">Please confirm your details</h5>
+                    <div class="row align-items-center">
+                <div class="col-md-6 pt-md-0 pt-4" style="flex: 0 0 100%;  max-width: 100%;">
+                    <h3 class="mb-sm-4 mb-3 title" style="margin: auto; width: 50%; padding: 10px;">Your Orders</h3>
+                    </div>
+                    </div>
+                    
                     <!-- <p>Please give us your details to serve you better</p> -->
-
-                    <form method="post" class="w3layouts-contact-fm" action="#" th:action="@{/customerDetails}" th:object="${customer}">
-
-                        <div th:object = "${orderid}">
-                        	<input th:name="orderid" type="hidden" th:id="orderidHidden" class="form-control" th:value="${orderid}">
-                       	</div>
-	                        <div class="row main-cont-sec">
-	                            <div class="col-md-8 mr-auto ml-auto">
-	                                <div class="form-group">
-	                                    <label for="w3lName">Name</label>
-	                                    <input class="form-control" type="text" name="w3lName" id="w3lName" placeholder=""
-	                                        required th:field = "${user.name}">
-	                                </div>
-	                                <div class="form-group">
-	                                    <label for="w3lEmail">Email</label>
-	                                    <input class="form-control" type="email" name="w3lName" id="w3lEmail" placeholder=""
-	                                        required th:field = "${user.email}" readonly>
-	                                </div>
-	                                <div class="form-group">
-	                                    <label for="w3lSender">Phone</label>
-	                                    <input class="form-control" type="number" name="w3lSender" id="w3lSender"
-	                                        placeholder="" required th:field = "*{phoneNumber}" readonly>
-	                                </div>
-	                                
-	                               
-								<div class="form-group" th:object = "${orderType}">
-									
-										<label for="order_type">Choose Order Type</label> <select
-										id="selectId" th:onchange="|addFields(this.value)|">
-										<option value=""> Select Type </option>
-										<option
-											th:each="Otype : ${T(com.bitssmart.smartRestaurant.Model.OrderType).values()}"
-											th:value="${Otype}" th:text="${Otype}">
-										</option>
-									</select>
-									<input th:name="orderType" type="hidden" th:id="orderTypeHidden" class="form-control" >
-									</div>
-								
-								
-								 <div class="form-group" style="display: none;" id="addressDiv">
-	                                    <label for="w3lAddress">Address</label>
-	                                    <input class="form-control" type="text"  id="w3lAddress" placeholder=""
-	                                         th:field = "*{address}" >
-	                                </div>
-								
-							</div>
-	                        </div>
-	                        <div class="form-group-2 mt-4">
-	                            <button type="submit" class="btn button-style d-flex mr-auto ml-auto">Confirm</button>
-	                        </div>
+              
+                
                
-                    </form>
+                
+                <div class="row item"  th:if="${not #lists.isEmpty(orders)}">
+						<table class="table table-striped" style="margin-top: 100px;">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Customer Name</th>
+									<th>Total Price</th>
+									<th>Date</th>
+									<th>Order Type</th>
+									<th>Points Earned</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="order, status : ${orders}">
+									<td th:text="${order.id}">Id</td>
+									<td th:text="${order.customerID.userid.name}">Id</td>
+									<td th:text="${order.totalPrice}">Total Price</td>
+									<td th:text="${#dates.format(order.createdAt, 'dd-MMM-yyyy')}"></td>
+									<td th:text="${order.orderType}">Order Type</td>
+									<td th:if="${order.totalPrice &gt; -1 and order.totalPrice &lt; 201}">5</td>
+									<td th:if="${order.totalPrice &gt; 200 and order.totalPrice &lt; 501}">10</td>
+									<td th:if="${order.totalPrice &gt; 500}">15</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+                
+                
                 </div>
             </div>
         </div>
@@ -125,9 +103,9 @@ Author URL: http://w3layouts.com
     
     <!-- //footer -->
 
-    <!-- Js scripts -->
+     <!-- Js scripts -->
     <!-- move top -->
-     <button onclick="topFunction()" id="movetop" title="Go to top">
+    <button onclick="topFunction()" id="movetop" title="Go to top">
         <span class="fa fa-level-up" aria-hidden="true"></span>
     </button>
     <script>
@@ -148,6 +126,12 @@ Author URL: http://w3layouts.com
         function topFunction() {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
+        }
+        
+        
+        function selectId(id){
+        	document.getElementById("restaurantIndexHidden").value = id;
+        	$( "#target" ).click();
         }
     </script>
     <!-- //move top -->
@@ -277,17 +261,6 @@ Author URL: http://w3layouts.com
     <script src="/js/bootstrap.min.js"></script>
     <!-- //bootstrap-->
     <!-- //Js scripts -->
-    <script>
-    function addFields(val){
-    	if(val == "HOME_DELIVERY"){
-    		document.getElementById("addressDiv").style.display = "block";
-    	}else{
-    		document.getElementById("addressDiv").style.display = "none";
-    		document.getElementById("addressDiv").selectedIndex = "0";
-    	}
-    	document.getElementById("orderTypeHidden").value = val;
-    }
-    </script>
 </body>
 
 </html>

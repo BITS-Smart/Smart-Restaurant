@@ -47,9 +47,6 @@ public class Payment {
 	@Column(name = "paymentId")
 	private String paymentId;
 	
-	@Column(name = "paymentOptions", nullable = false)
-	private PaymentOptions paymentOptions;
-	
 	@ToString.Exclude
 	@OneToOne
 	@MapsId

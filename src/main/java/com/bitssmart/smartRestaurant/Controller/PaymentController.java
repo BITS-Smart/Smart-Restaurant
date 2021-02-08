@@ -35,7 +35,7 @@ public class PaymentController {
 		foodOrder.getPayment().setFoodOrder(foodOrder);
 		//Payment payment = new Payment();
 		foodOrder.getPayment().setFoodOrder(foodOrder);
-		foodOrder.getPayment().setPaymentOptions(PaymentOptions.CASH);
+		//foodOrder.getPayment().setPaymentOptions(PaymentOptions.CASH);
 		foodOrder.getPayment().setAmount(foodOrder.getTotalPrice());
 		foodOrder.setIsPaid(true);
 		if(foodOrder.getOrderType().equals(OrderType.HOME_DELIVERY)) {
