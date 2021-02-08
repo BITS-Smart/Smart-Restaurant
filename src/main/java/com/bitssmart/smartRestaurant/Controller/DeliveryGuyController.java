@@ -3,7 +3,9 @@ package com.bitssmart.smartRestaurant.Controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +152,14 @@ public class DeliveryGuyController {
 				}
 			}
 			fo1.setOrderStatus(OrderStatus.DELIVERED);
-			fo1.getUserId().getDeliveryGuy().setPoints(fo1.getUserId().getDeliveryGuy().getPoints()+5);
+			if(fo1.getTotalPrice() >= 0 && fo1.getTotalPrice() <= 200) {
+				fo1.getUserId().getDeliveryGuy().setPoints(fo1.getUserId().getDeliveryGuy().getPoints()+5);
+			}else if(fo1.getTotalPrice() > 200 && fo1.getTotalPrice() <= 500) {
+				fo1.getUserId().getDeliveryGuy().setPoints(fo1.getUserId().getDeliveryGuy().getPoints()+10);
+			}else {
+				fo1.getUserId().getDeliveryGuy().setPoints(fo1.getUserId().getDeliveryGuy().getPoints()+15);
+			}
+			
 			fo1 = orderService.saveFoodOrder(fo1);
 			System.out.println(":::::delivery status"+ fo1.getOrderStatus());
 			model.addObject("msg", "Delivery Successful!");
@@ -170,6 +179,21 @@ public class DeliveryGuyController {
 //		model.addObject("orderIds", orderIds);
 		model.addObject("points", user.getDeliveryGuy().getPoints());
 		model.setViewName("updateOrderDetails");
+		return model;
+	}
+	
+	@RequestMapping(value={"/viewDeliveredOrders"},method=RequestMethod.GET)    
+	public ModelAndView delRegister(HttpServletRequest request)  
+	{
+		@SuppressWarnings("unchecked")
+		Map<String, String> messages = (Map<String, String>) request.getSession().getAttribute("MY_SESSION_MESSAGES");
+		Long id = Long.parseLong(messages.get("id"));
+		List<FoodOrder> orders = orderService.getAllDeliveredOrders(id);
+		
+		ModelAndView model = new ModelAndView();
+	   
+		model.addObject("orders", orders);
+		model.setViewName("deliveredOrders");
 		return model;
 	}
 }

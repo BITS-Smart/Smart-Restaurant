@@ -11,6 +11,7 @@ import com.bitssmart.smartRestaurant.Model.OrderItem;
 import com.bitssmart.smartRestaurant.Model.OrderStatus;
 import com.bitssmart.smartRestaurant.Model.OrderType;
 import com.bitssmart.smartRestaurant.Model.Restaurant;
+import com.bitssmart.smartRestaurant.Model.UserRoles;
 import com.bitssmart.smartRestaurant.Repository.OrderRepository;
 import com.bitssmart.smartRestaurant.ResponseVO.ShowOrderVO;
 
@@ -59,6 +60,18 @@ public class OrderService {
 		oStatusList.add(OrderStatus.COOKED);
 		oStatusList.add(OrderStatus.IS_COOKING);
 		orderRepository.findByOrderStatus(oStatusList, OrderType.HOME_DELIVERY).forEach(foodOrders::add);
+		return foodOrders;
+	}
+	
+	public List<FoodOrder> getAllCusotmerOrders(Long id){
+		List<FoodOrder> foodOrders = new ArrayList<>();
+		orderRepository.findByCustomerId(id).forEach(foodOrders::add);
+		return foodOrders;
+	}
+	
+	public List<FoodOrder> getAllDeliveredOrders(Long id){
+		List<FoodOrder> foodOrders = new ArrayList<>();
+		orderRepository.findByDeliveryGuy(id,UserRoles.DELIVERY_GUY).forEach(foodOrders::add);
 		return foodOrders;
 	}
 }

@@ -20,7 +20,14 @@
 						aria-hidden="true"></i> Smart Restaurant
 					</a>
 				</h1>
-
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                     <ul class="navbar-nav mx-lg-auto">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signout">Logout</a>
+                        </li>
+                    </ul> 
+                </div>
 				<div class="ml-auto">
 					<nav class="navigation">
 						<div class="theme-switch-wrapper">
@@ -50,7 +57,10 @@
 					</div><br><br><br><br>
 					<div class="mr-auto ml-auto">
 						<h3 class="mb-sm-4 mb-3 title mr-auto ml-auto"
-							style="margin: auto; width: 50%; padding: 10px; " th:text="'Welcome '+${userName}+'			Points: '+${points}"></h3>
+							style="margin: auto; width: 58%; padding: 10px; " th:text="'Welcome '+${userName}+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Points: '+${points}"></h3>
+							<span style="display:inline-block; width: 10px;"></span>
+							<!-- <h3 class="mb-sm-4 mb-3 title mr-auto ml-auto"
+							style="margin: auto; width: 50%; padding: 10px; " th:text="'Points: '+${points}"></h3> -->
 					
 					</div>
 					<div class="row">
@@ -62,22 +72,49 @@
 					</div>
 					<!-- <p>Please give us your details to serve you better</p> -->
 					<div th:unless="${#lists.isEmpty(foodOrderList)}">
+					<table class="table table-striped" style="margin-top: 100px;">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>Customer name</th>
+												<th>Address</th>
+												<th>OTP</th>
+												<th>Action</th>
+												
+											</tr>
+										</thead>
+										<tbody>
 					
-					<div  class="container" th:each="role,iter : ${foodOrderList}" th:unless="${#lists.isEmpty(role)}">
+					<tr  class="container" th:each="role,iter : ${foodOrderList}" th:unless="${#lists.isEmpty(role) and #strings.startsWith(role.orderStatus, 'DELIVERED')}">
 					
-							<div th:unless="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
+							<!-- <div th:unless="${#strings.startsWith(role.orderStatus, 'DELIVERED')}"> -->
 								<form th:action="@{/orderDelivered}"  method="post" th:object="${foodOrderList}">
-									<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"></p>
-									<input type="text" name="otp" th:id="${iter.index}"	required  />
+								<!-- 	<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}"></p> -->
+									<!-- <input type="text" name="otp" th:id="${iter.index}"	required  /> -->
 									<input type="hidden" name="orderid" th:id="${iter.index}"	th:value="${role.id}"  />
 									<!-- <input type="hidden" th:name="foodOrderList" 	th:value="${foodOrderList}"  /> -->
-									<button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Delivered</button>
+									<!-- <button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Delivered</button> -->
+									
+
+											<!-- <tr> -->
+												<td th:text="${role.id}">Id</td>
+												<td th:text="${role.customerID.userid.name}">Customer Name</td>
+												<td th:text="${role.customerID.address}">Address</td>
+												
+												<td><input type="text" name="otp" th:id="${iter.index}"	required  /></td>
+												
+												<td><button type="submit" class="btn button-style d-flex mr-auto ml-auto" >Mark as Delivered</button></td>
+												
 								</form>
+											</tr>
+										</tbody>
+									</table>
+
 							</div>
 							
-							<div th:if="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
+							<!-- <div th:if="${#strings.startsWith(role.orderStatus, 'DELIVERED')}">
 								<p th:text="${role.customerID.userid.name}+' : '+${role.customerID.address}+'					Delivered!'"></p>
-							</div>
+							</div> -->
 					
 					</div>
 					

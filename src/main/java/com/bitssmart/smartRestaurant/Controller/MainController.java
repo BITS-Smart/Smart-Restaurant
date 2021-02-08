@@ -2,10 +2,13 @@ package com.bitssmart.smartRestaurant.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,8 +18,11 @@ import com.bitssmart.smartRestaurant.Model.Customer;
 import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -133,6 +139,7 @@ public class MainController {
 			  user.getCustomer().setIsVIP(false);
 		  }
 		  if(user.getUserRoles().equals(UserRoles.DELIVERY_GUY)) {
+			  System.out.println("email user---->"+user.getEmail());
 			  user.getDeliveryGuy().setUserid(user);
 			  user.getDeliveryGuy().setIsApproved(false);
 		  }
@@ -149,7 +156,7 @@ public class MainController {
 	 }
 	
 	@RequestMapping(value= {"/home/index"}, method= {RequestMethod.GET,RequestMethod.POST})
-	 public ModelAndView home() {
+	 public ModelAndView home(HttpServletRequest request) {
 	  ModelAndView model = new ModelAndView();
 	  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	  System.out.println(auth.getName());
@@ -157,6 +164,21 @@ public class MainController {
 	  User user = userService.findUserByEmail(auth.getName());
 	  model.addObject("userName", user.getName());
 	  System.out.println("::::"+user.getUserRoles());
+	  @SuppressWarnings("unchecked")
+	Map<String, String> messages = (Map<String, String>) request.getSession().getAttribute("MY_SESSION_MESSAGES");
+		if (messages == null) {
+			messages = new HashMap<>();
+			request.getSession().setAttribute("MY_SESSION_MESSAGES", messages);
+		}
+		messages.put("email", user.getEmail());
+		messages.put("name", user.getName());
+		messages.put("id", String.valueOf(user.getId()));
+		
+		
+		request.getSession().setAttribute("MY_SESSION_MESSAGES", messages);
+		
+		
+		Map<String, String> msg = (Map<String, String>) request.getSession().getAttribute("MY_SESSION_MESSAGES");
 	  if(user.getUserRoles().equals(UserRoles.CUSTOMER)) {
 		  List<Restaurant> restaurants = restaurantService.getAllRestaurants();
 		  model.addObject("restaurantList",restaurants);
@@ -182,6 +204,12 @@ public class MainController {
 	  }
 	  return model;
 	 }
+	
+	@GetMapping("/signout")
+	public String destroySession(HttpServletRequest request) {
+		request.getSession().invalidate();
+		return "redirect:/login";
+	}
 	
 
 }

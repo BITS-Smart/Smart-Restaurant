@@ -47,7 +47,6 @@ public class Payment {
 	@Column(name = "paymentId")
 	private String paymentId;
 	
-
 	@Column(name = "paymentMode")
 	private String paymentMode;
 	
@@ -77,10 +76,7 @@ public class Payment {
 	
 	@Column(name = "txnDate")
 	private String txnDate;
-	
 
-	
-  
 	@ToString.Exclude
 	@OneToOne
 	@MapsId
