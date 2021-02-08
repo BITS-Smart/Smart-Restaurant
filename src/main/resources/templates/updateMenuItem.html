@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Edit Menu Item</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+<!--    <a class="navbar-brand" href="#">bits-smartr.avin.dev</a>-->
+</nav>
+
+<main role="main" class="container">
+
+    <div class="starter-template">
+        <form action="#"
+              th:action="@{/updateMenuItem/{id}(id=${menuItem.id})}"
+              th:object="${menuItem}"
+              method="post">
+<!--            description-->
+            <label for="description">description</label>
+            <input type="text" th:field="*{description}" id="description" placeholder="description">
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+<!--            foodCategory-->
+<!--            <label for="foodCategory">foodCategory</label>-->
+<!--            <input type="text" th:field="*{foodCategory}" id="foodCategory" placeholder="foodCategory">-->
+<!--            <span th:if="${#fields.hasErrors('foodCategory')}" th:errors="*{foodCategory}"></span>-->
+
+            <label for="foodCategory">foodCategory</label>
+            <select
+                th:field="*{foodCategory}" id="foodCategory">
+            <option value=""> Select Food Category </option>
+            <option
+                    th:each="foodCategory : ${T(com.bitssmart.smartRestaurant.Model.FoodCategory).values()}"
+                    th:value="${foodCategory}" th:text="${foodCategory}">
+                <!-- th:unless="${#strings.startsWith(role, 'CUSTOMER') or #strings.startsWith(role, 'DELIVERY_GUY') }"> -->
+            </option>
+        </select>
+
+<!--            ingredients-->
+            <label for="ingredients">ingredients</label>
+            <input type="text" th:field="*{ingredients}" id="ingredients" placeholder="ingredients">
+            <span th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}"></span>
+            <!--            isVeg-->
+<!--            <label for="isVeg">is_veg</label>-->
+<!--            <input type="text" th:field="*{isVeg}" id="isVeg" placeholder="isVeg">-->
+<!--            <span th:if="${#fields.hasErrors('isVeg')}" th:errors="*{isVeg}"></span>-->
+
+            <label for="isVeg" >isVeg</label>
+            <input type="checkbox" th:field="*{isVeg}" id="isVeg" placeholder="isVeg" />
+            <span th:if="${#fields.hasErrors('isVeg')}" th:errors="*{isVeg}"></span>
+            <br/>
+
+
+
+            <!--            name-->
+            <label for="name">name</label>
+            <input type="text" th:field="*{name}" id="name" placeholder="name">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            <!--            price-->
+            <label for="price">price</label>
+            <input type="text" th:field="*{price}" id="price" placeholder="price">
+            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+
+            <input type="submit" value="Update Menu Item">
+        </form>
+
+    </div>
+
+
+</main>
+<!-- /.container -->
+
+</body>
+</html>
