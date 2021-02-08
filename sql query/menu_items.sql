@@ -49,3 +49,6 @@ VALUES(14, '2021-01-13 00:04:36.488', 'Ek garam chai ki pyali ho!!', 3, NULL, tr
 INSERT INTO public.menu_items
 (id, created_at, description, food_category, ingredients, is_enabled, is_veg, name, price, updated_at, restaurant_id_id)
 VALUES(15, '2021-01-13 00:04:36.494', 'Enjoy kadak chai made with ginger mint and other spices', 4, NULL, true, true, 'Masala tea', 20.0, NULL, 1);
+
+--Because of specifying id in the above queries the sequence used is not updated. Following query will bring the sequence of menu_item primary key id to sync
+ALTER SEQUENCE menu_items_id_seq RESTART WITH 16;
