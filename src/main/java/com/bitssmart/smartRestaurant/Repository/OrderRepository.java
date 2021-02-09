@@ -22,4 +22,11 @@ public interface OrderRepository extends CrudRepository<FoodOrder, Long > {
 	
 	@Query("SELECT a FROM FoodOrder a WHERE userId.id =:delId and userId.userRoles=:delivery_guy")
 	public List<FoodOrder> findByDeliveryGuy(@Param("delId") Long id,@Param("delivery_guy") UserRoles userRoles);
+	
+	/*
+	 * @Query("SELECT a FROM FoodOrder a WHERE a.orderItems[0].menuItemId.restaurantId.id= :resId "
+	 * ) public List<FoodOrder> findByRestaurantId(@Param("resId") Long id);
+	 */
+	@Query("SELECT a FROM FoodOrder a")
+	public List<FoodOrder> findByRestaurantId();
 }

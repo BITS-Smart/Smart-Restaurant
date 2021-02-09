@@ -1,4 +1,6 @@
 package com.bitssmart.smartRestaurant.Service;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,5 +29,10 @@ public class UserServiceImpl implements UserService{
 	  user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 	  userRepository.save(user);
 	 }
+	 
+	 @Override
+	 public List<User> findByDeliveryGuy() {
+		  return userRepository.findByDeliveryGuy(false);
+		 }
 
 }

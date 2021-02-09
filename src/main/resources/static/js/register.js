@@ -10,7 +10,7 @@ function addFields(val){
         input1.type = 'text';
 		input1.id = 'restId';
         input1.setAttribute('name', 'restaurantId.id' );
-        dlvryDiv.appendChild(input1);
+        restDiv.appendChild(input1);
 		document.getElementById('mainDiv').appendChild(restDiv);
 	}else{
 		document.getElementById("restaurantDropdown").style.display = "none";

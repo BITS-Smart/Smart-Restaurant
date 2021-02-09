@@ -74,4 +74,16 @@ public class OrderService {
 		orderRepository.findByDeliveryGuy(id,UserRoles.DELIVERY_GUY).forEach(foodOrders::add);
 		return foodOrders;
 	}
+	
+	public List<FoodOrder> getAllRestaurantOrders(Long id){
+		List<FoodOrder> foodOrders = new ArrayList<>();
+		orderRepository.findByRestaurantId().forEach(foodOrders::add);
+		List<FoodOrder> foodOrdersNew = new ArrayList<>();
+		for(FoodOrder a: foodOrders) {
+			if(a.getOrderItems().get(0).getMenuItemId().getRestaurantId().getId().equals(id)) {
+				foodOrdersNew.add(a);
+			}
+		}
+		return foodOrdersNew;
+	}
 }

@@ -1,38 +1,26 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>BITS Smart Restaurant</title>
-    <!-- google-fonts -->
-    <!-- <link href="//fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
-        rel="stylesheet"> -->
-    <!-- //google-fonts -->
-    <!-- Template CSS Style link -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <link rel="stylesheet" href="css/style-starter.css">
+    <link rel="stylesheet" href="/css/style-starter.css">
 </head>
 
 <body>
-<!-- script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script-->
-
     <!--header-->
     <header id="site-header" class="fixed-top">
         <div class="container">
             <nav class="navbar navbar-expand-lg stroke px-0">
                 <h1>
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="/home">
                         <i class="fa fa-cutlery" aria-hidden="true"></i> Smart Restaurant
                     </a>
                 </h1>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                      <ul class="navbar-nav mx-lg-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="/managerHome">Home</a>
@@ -42,24 +30,8 @@ Author URL: http://w3layouts.com
                         </li>
                     </ul> 
                 </div>
-                <!-- if logo is image enable this   
-    <a class="navbar-brand" href="#index.html">
-        <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
-    </a> -->
-                <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
-                    data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
-                    <span class="navbar-toggler-icon fa icon-close fa-times"></span>
-                </button>
-				 
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    
-                </div>
-                <!-- search button -->
-                <!-- //search button -->
-                <!-- toggle switch for light and dark theme -->
-                <div class="cont-ser-position">
+				
+                <div class="ml-auto">
                     <nav class="navigation">
                         <div class="theme-switch-wrapper">
                             <label class="theme-switch" for="checkbox">
@@ -85,39 +57,47 @@ Author URL: http://w3layouts.com
         <div class="contact-sec py-5">
             <div class="container py-md-4 py-3">
                 <div class="contact-w3pvt-form">
-                    <div class="title-big mb-5"></div>
-                    <h3 class="mb-5">Check out the Reports</h3>
-                    <form method="post" class="w3layouts-contact-fm" action="#">
-                        
-                        
-                        <!-- div class="row main-cont-sec">
-                            <div class="col-md-6 left-cont-contact">
-                                <div class="form-group">
-                                    <label for="w3lName">Start Date</label>                                    
-                                    <input class="form-control" type="date" placehoder="Start Date" id="startDate">
-                                </div>
-                             </div>
-                             <div class="col-md-6 right-cont-contact mt-md-0 mt-1"> 
-                                <div class="form-group">
-                                    <label for="w3lSender">End Date</label>
-                                    <input class="form-control" type="date" placehoder="End Date" id="endDate">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group-2 mt-4">
-                            <button type="submit" class="btn button-style d-flex ml-auto mr-auto">Submit</button>
-                        </div -->
-                        <div id="piechart" style="width: 900px; height: 500px;"></div>
-                        <div id="chart_div"></div>
-                    </form>
+                    <div class="row align-items-center">
+                <div class="col-md-6 pt-md-0 pt-4" style="flex: 0 0 100%;  max-width: 100%;">
+                    <h3 class="mb-sm-4 mb-3 title" style="margin: auto; width: 50%; padding: 10px;" th:text="${resName}+' Orders'">Orders</h3>
+                    </div>
+                    </div>
+                    
+                    <!-- <p>Please give us your details to serve you better</p> -->
+              
+                
+               
+                
+                <div class="row item"  th:if="${not #lists.isEmpty(orders)}">
+						<table class="table table-striped" style="margin-top: 100px;">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Total Price</th>
+									<th>Date</th>
+									<th>isPaid</th>
+									<th>Order Type</th>
+									<th>Order Status</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="order, status : ${orders}">
+									<td th:text="${order.id}">Id</td>
+									<td th:text="${order.totalPrice}">Total Price</td>
+									<td th:text="${#dates.format(order.createdAt, 'dd-MMM-yyyy')}"></td>
+									<td th:text="${order.isPaid}">Is Paid</td>
+									<td th:text="${order.orderType}">Order Type</td>
+									<td th:text="${order.orderStatus}">Order Status</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+                
+                
                 </div>
             </div>
         </div>
-        
-        
-    
-        
-        
     </section>
 
     <!-- //banner section -->
@@ -125,14 +105,12 @@ Author URL: http://w3layouts.com
     
     <!-- //footer -->
 
-    <!-- Js scripts -->
+     <!-- Js scripts -->
     <!-- move top -->
-    
-    
-    
+    <button onclick="topFunction()" id="movetop" title="Go to top">
+        <span class="fa fa-level-up" aria-hidden="true"></span>
+    </button>
     <script>
-    	
-    
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function () {
             scrollFunction()
@@ -152,85 +130,20 @@ Author URL: http://w3layouts.com
             document.documentElement.scrollTop = 0;
         }
         
-        console.log("Another one");
+        
+        function selectId(id){
+        	document.getElementById("restaurantIndexHidden").value = id;
+        	$( "#target" ).click();
+        }
     </script>
     <!-- //move top -->
 
     <!-- common jquery plugin -->
-    <script src="js/jquery-3.3.1.min.js">
-    
-    
-    </script>
-    <script src="js/managerReports.js"></script>
-    
-    <script th:inline="javascript">
-        var real_data = /*[[${orderItems}]]*/'noValue';
-        //console.log("------",real_data.length);
-        
-        
- 
-        $(document).ready(function() {
-            google.charts.load('current', {
-                packages : [ 'corechart', 'bar' ]
-            });
-    
-            google.charts.setOnLoadCallback(drawPieChart);
-            google.charts.setOnLoadCallback(drawColumnChart);
-        });
- 
-       	function drawColumnChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'MenuItem');
-            data.addColumn('number', 'Total Sold');
-            
-            for (i =0; i < real_data.length;i++){
-            	data.addRow([real_data[i].menuItem, real_data[i].count])
-            } 
-     
-            var options = {
-                title : 'Total Sales',
-                hAxis : {
-                    title : 'Menu Items',
-                },
-                vAxis : {
-                    title : 'View Count'
-                }
-            };
-            var chart = new google.visualization.ColumnChart(document
-                    .getElementById('chart_div'));
-            chart.draw(data, options);
-        }
-
- 
-        function drawPieChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'MenuItem');
-            data.addColumn('number', 'Total Sold');
-            for(i = 0; i < 5; i++){
-            	data.addRow([real_data[i].menuItem, real_data[i].count])
-            }
-            
-            
-            /* Object.keys(real_data).forEach(function(key) {
-                data.addRow([ key, real_data[key] ]);
-            });*/
-            var options = {
-                title : 'Top 5 items'
-            };
-            var chart = new google.visualization.PieChart(document
-                    .getElementById('piechart'));
-            chart.draw(data, options);
-        } 
-    </script>
-    
-    
-    
-    
-    
+    <script src="/js/jquery-3.3.1.min.js"></script>
     <!-- //common jquery plugin -->
 
     <!-- theme switch js (light and dark)-->
-    <script src="js/theme-change.js"></script>
+    <script src="/js/theme-change.js"></script>
     <script>
         function autoType(elementClass, typingSpeed) {
             var thhis = $(elementClass);
@@ -269,7 +182,7 @@ Author URL: http://w3layouts.com
     <!-- //theme switch js (light and dark)-->
 
     <!-- magnific popup -->
-    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -347,7 +260,7 @@ Author URL: http://w3layouts.com
     <!-- //disable body scroll which navbar is in active -->
 
     <!--bootstrap-->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- //bootstrap-->
     <!-- //Js scripts -->
 </body>

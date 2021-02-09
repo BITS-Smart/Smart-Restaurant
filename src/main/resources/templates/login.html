@@ -10,6 +10,7 @@
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 </head>
 
+
 <body>
 
 	<header id="site-header" class="fixed-top">
@@ -51,7 +52,7 @@
                   <form th:action="@{/home/index}" method="post">
 				 <div class="alert alert-danger" role="alert" th:if="${param.error}">
 				  <div class="alert alert-danger">
-		            <span th:text="#{login.error}"></span>
+		            <span th:text="#{'Check login id and password'}"></span>
 		        </div>
 				  </div>
                         

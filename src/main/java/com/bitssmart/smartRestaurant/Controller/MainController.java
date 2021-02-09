@@ -27,6 +27,7 @@ import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.bitssmart.smartRestaurant.Service.CustomerService;
 import com.bitssmart.smartRestaurant.Service.EmailConfigService;
 import com.bitssmart.smartRestaurant.Service.OrderService;
 import com.bitssmart.smartRestaurant.Service.RestaurantService;
@@ -118,6 +119,8 @@ public class MainController {
 	 private UserService userService;
 	@Autowired
 	private EmailConfigService emailConfigService;
+	@Autowired
+	private CustomerService customerService;
 	
 	@RequestMapping(value= {"/register"}, method=RequestMethod.POST)
 	 public ModelAndView createUser(@Valid User user, BindingResult bindingResult) {
@@ -125,9 +128,15 @@ public class MainController {
 	  User userExists = userService.findUserByEmail(user.getEmail());
 	  List<Restaurant> restaurants = restaurantService.getAllRestaurants();
 		model.addObject("restaurantList",restaurants);
-	  
 	  if(userExists != null) {
 	   bindingResult.rejectValue("email", "error.user", "This email already exists!");
+	   model.addObject("msg", "This email already exists!");
+	  }else
+	  if(user.getUserRoles().equals(UserRoles.CUSTOMER)) {
+		  if(null != (customerService.findByPhoneNumber(user.getCustomer()))) {
+			  bindingResult.rejectValue("customer.phoneNumber", "error.user", "This Phone Number already exists!");
+			  model.addObject("msg", "This Phone Number already exists!");
+		  }
 	  }
 	  if(bindingResult.hasErrors()) {
 	   model.setViewName("register");
@@ -144,7 +153,7 @@ public class MainController {
 			  user.getDeliveryGuy().setIsApproved(false);
 		  }
 		  userService.saveUser(user);
-		  String messageToSent="Dear,"+user.getName()+"<br><br>Congratulation!<br>You have successfully registered as "+user.getUserRoles()+" in Smart Restaurant<br><br><br>Thank You <br>BitsSmartRestaurant";
+		  String messageToSent="Dear "+user.getName()+",<br><br>Congratulation!<br>You have successfully registered as "+user.getUserRoles()+" in Smart Restaurant<br><br><br>Thank You <br>BitsSmartRestaurant";
 		  String subject="Successfully Registered in Smart Restaurant";
 		  emailConfigService.mailSender(user.getEmail(),messageToSent, subject);
 		  model.addObject("msg", "User has been registered successfully!");
@@ -199,8 +208,8 @@ public class MainController {
 	  
 	  
 	  else {
-		  
-		  model.setViewName("viewOrders");
+		  model.addObject("restaurantIndex",user.getRestaurantId().getId()); 
+		  model.setViewName("managerHome");
 	  }
 	  return model;
 	 }
