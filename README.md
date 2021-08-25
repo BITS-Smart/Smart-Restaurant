@@ -15,7 +15,7 @@ The chef can update the order status with just one click and it will be visible 
 
 ### Tech
 
-Dillinger uses a number of open source projects to work properly:
+Smart Restaurant uses a number of open source projects to work properly:
 
 * Front End- HTML, CSS, JS, Bootstrap
 * Backend- Java
